@@ -39074,12 +39074,12 @@ saveMemoryEditor=editorActionTransaction(saveMemoryEditor,'save');
     if(!['about','contact','privacy'].includes(key))return null;
     const titles={about:_tr(2880),contact:_tr(2884),privacy:_tr(2886)};
     let body=_tr(2907);
-    if(key==='about')body=`<div class="help-copy about-copy"><div class="about-brand"><img class="about-product-icon" src="${document.querySelector('link[rel="icon"][type="image/svg+xml"]').getAttribute('href')}" alt=""><strong>Verseforge Story</strong></div><h3>${escapeHtml(_tr(3056))}</h3><p>${escapeHtml(VF_RELEASE.appVersion)}</p><h3>Github</h3><div class="about-repository"><p class="about-repository-url">https://github.com/Verseforge/verseforge-story</p><button class="outline-btn" data-open-repository type="button">${escapeHtml(_tr(3057))}</button></div></div>`;
+    if(key==='about')body=`<div class="help-copy about-copy"><div class="about-brand"><img class="about-product-icon" src="${document.querySelector('link[rel="icon"][type="image/svg+xml"]').getAttribute('href')}" alt=""><strong>Verseforge Story</strong></div><h3>${escapeHtml(_tr(3056))}</h3><p>${escapeHtml(VF_RELEASE.appVersion)}</p><h3>GitHub</h3><div class="about-repository"><p class="about-repository-url">https://github.com/Verseforge/story</p><button class="outline-btn" data-open-repository type="button">${escapeHtml(_tr(3057))}</button></div></div>`;
     if(key==='contact')body=_tr(2909)+FEEDBACK_FORM_URL+_tr(2910);
     if(key==='privacy')body=_tr(2911);
     const layer=makeEditorDynamicLayer(titles[key]||_tr(2874),body,_tr(945),'help-detail-layer');$$('[data-cancel]',layer).forEach(b=>b.onclick=()=>layer.remove());
     $('[data-copy-feedback]',layer)?.addEventListener('click',openFeedbackLinkCopy);
-    $('[data-open-repository]',layer)?.addEventListener('click',()=>window.open('https://github.com/Verseforge/verseforge-story','_blank','noopener,noreferrer'));
+    $('[data-open-repository]',layer)?.addEventListener('click',()=>window.open('https://github.com/Verseforge/story','_blank','noopener,noreferrer'));
     return layer;
   }
   function installSecondBatchUI(){
