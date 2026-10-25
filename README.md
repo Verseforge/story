@@ -40,7 +40,8 @@ Verseforge Story 是一个面向个人创作者的本地文游编辑器。通过
 
 ### 联系与反馈
 
-- GitHub Issues：[提交问题](https://github.com/Verseforge/verseforge-story/issues)
+- GitHub Issues：[提交问题](https://github.com/Verseforge/story/issues)
+- 用户反馈表（飞书多维表格）：[填写反馈](https://ncnviye1gx54.feishu.cn/share/base/form/shrcnhqCTlE1nLDngroYfDYrvCg)
 - 邮箱：verseforge@foxmail.com / verseforge.sj@gmail.com
 
 反馈问题时，请尽量说明浏览器、设备、操作步骤与实际结果。需要附上故事数据时，请先移除私人内容。
@@ -81,7 +82,8 @@ The local single-file editor does not require separate icon files. For deploymen
 
 ### Contact and feedback
 
-- GitHub Issues: [Report a problem](https://github.com/Verseforge/verseforge-story/issues)
+- GitHub Issues: [Report a problem](https://github.com/Verseforge/story/issues)
+- User feedback form (Lark Forms): [Send feedback](https://ncnviye1gx54.feishu.cn/share/base/form/shrcnhqCTlE1nLDngroYfDYrvCg)
 - Email: verseforge@foxmail.com / verseforge.sj@gmail.com
 
 When reporting a problem, include your browser, device, steps to reproduce, and what happened. Remove private content before attaching story data.
