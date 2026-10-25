@@ -27,7 +27,13 @@ Verseforge Story 是一个面向个人创作者的本地文游编辑器。通过
 4. 在预览中试玩，结合故事检验和作者测试工具检查各条路径。
 5. 导出独立故事 HTML，交给读者使用浏览器打开游玩。
 
-本地单文件使用不需要额外的图标文件。部署时可将编辑器命名为 `index.html`；网页安装清单及其图标使用 `assets/icons/` 中的相对路径。
+本地单文件使用不需要额外的图标文件。部署时可将编辑器命名为 `index.html`；`site.webmanifest`、`sw.js` 与 `index.html` 同级，安装图标位于 `assets/icons/`。
+
+### 网页离线使用
+
+通过 HTTPS 访问网页版并完成首次资源缓存后，可在支持的浏览器中添加到主屏幕或安装为应用，之后断网也能重新打开编辑器。首次访问仍需联网；离线使用前，请先关闭页面并断网重开确认缓存成功。
+
+更新在后台准备，不会强制刷新正在编辑的页面。新版准备好后，关闭所有 Story 标签页和应用窗口，再次打开时使用新版。缓存保存的是程序资源，故事仍保存在浏览器本地；请继续定期导出备份。
 
 ### 本地数据与注意事项
 
@@ -69,7 +75,13 @@ The editor runs from a single HTML file, with no dependency installation, accoun
 4. Play through the preview and check your paths with story inspection and author testing tools.
 5. Export a standalone story HTML file for readers to open and play in a browser.
 
-The local single-file editor does not require separate icon files. For deployment, name the editor `index.html`; the web app manifest and its icons use relative paths under `assets/icons/`.
+The local single-file editor does not require separate icon files. For deployment, name the editor `index.html`; keep `site.webmanifest` and `sw.js` beside `index.html`, with installation icons under `assets/icons/`.
+
+### Offline web use
+
+After opening the HTTPS website and completing the initial resource cache, you can add it to the home screen or install it in a supported browser, then reopen the editor offline. The first visit requires a connection. Before relying on offline access, close the page and reopen it with the network disconnected to confirm caching succeeded.
+
+Updates are prepared in the background without forcing a reload while you edit. Once an update is ready, close all Story tabs and app windows; the next launch uses the new version. The cache contains application resources, while stories remain in browser storage. Continue exporting backups regularly.
 
 ### Local data and important notes
 
@@ -95,3 +107,4 @@ by [@Verseforge](https://github.com/Verseforge)
 ## 版权声明 / Copyright
 
 © 2026 Verseforge. 保留所有权利。All rights reserved.
+

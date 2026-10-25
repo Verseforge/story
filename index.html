@@ -3,14 +3,14 @@
 单文件离线文游编辑器；正式发布版本由 VF_RELEASE.appVersion 统一定义。
 兼容基线：正式发布的 v1 数据、故事、素材、备份及存储命名空间；后续更新必须保留兼容并为结构升级提供迁移。
 前缀约定：编辑、导入、素材、历程与导出统一去掉首尾空白及换行，保留内部空格；正文首部空格与空行是独立设置。
-部署可选资源：assets/icons/site.webmanifest 及同目录安装图标；现有图标内嵌，单文件本地使用不依赖外部资源。
+部署可选资源：根目录 site.webmanifest、sw.js 与 assets/icons/ 安装图标；现有图标内嵌，单文件本地使用不依赖外部资源。
 -->
 <html lang="zh-CN" data-app-theme="classic-blue">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#FFFFFF" />
-  <link rel="manifest" href="./assets/icons/site.webmanifest" />
+  <link rel="manifest" href="./site.webmanifest" />
   <meta name="application-name" content="Verseforge Story" />
   <meta name="apple-mobile-web-app-title" content="VF Story" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -39270,6 +39270,18 @@ function compactPlayerCss(published=false){
   }
 
   setInterval(previewTimerTick, 250);
+
+  // Deployment-only offline shell; local file use does not register a worker.
+  function registerEditorOfflineShell() {
+    if (!['https:', 'http:'].includes(location.protocol) || !window.isSecureContext || !('serviceWorker' in navigator)) return;
+    const register = () => navigator.serviceWorker.register(new URL('./sw.js', location.href).href, {
+      scope: new URL('./', location.href).href, updateViaCache: 'none'
+    }).catch(error => console.warn('[VF Story] Offline resources could not be prepared.', error));
+    if (document.readyState === 'complete') register();
+    else window.addEventListener('load', register, {once:true});
+  }
+  registerEditorOfflineShell();
+
   startVerseforgeStory().catch(err => {
     console.error(_tr(2962), err);
     storageUnavailable = true;
