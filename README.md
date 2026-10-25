@@ -8,7 +8,7 @@
 
 Verseforge Story 是一个面向个人创作者的本地文游编辑器。通过节点与分支组织剧情，搭配变量、记忆、实体和条件，制作可以实际游玩的互动故事，再导出为独立 HTML 文件。
 
-编辑器采用单文件形式，不需要安装依赖、注册账号或连接后端服务。可以在浏览器中本地打开，也可以通过部署后的网页访问。支持中英文界面，内置两个语言版本的示例故事《零点列车》，可用于体验故事机制和查看设置方式。
+编辑器采用单文件形式，不需要安装依赖、注册账号或连接后端服务。可以在浏览器中本地打开，也可以直接访问网页版：https://verseforges.com/story 。支持中英文界面，内置两个语言版本的示例故事《零点列车》，可用于体验故事机制和查看设置方式。
 
 ### 功能
 
@@ -21,7 +21,7 @@ Verseforge Story 是一个面向个人创作者的本地文游编辑器。通过
 
 ### 使用方式
 
-1. 使用浏览器打开编辑器 HTML 文件，或访问已部署的网页。
+1. 使用浏览器打开编辑器 HTML 文件，或直接访问网页版：https://verseforges.com/story 。
 2. 打开内置示例查看效果，或新建自己的故事。
 3. 编写节点正文、连接分支，并按需添加故事机制。
 4. 在预览中试玩，结合故事检验和作者测试工具检查各条路径。
@@ -49,7 +49,7 @@ Verseforge Story 是一个面向个人创作者的本地文游编辑器。通过
 
 Verseforge Story is a local interactive fiction editor for individual creators. Organize your story with nodes and branches, add variables, memories, entities, and conditions, then export a standalone HTML file that readers can play in a browser.
 
-The editor runs from a single HTML file, with no dependency installation, account, or backend required. Open it locally in a browser or access a deployed website. It includes Chinese and English interfaces, along with both language versions of the built-in example, *The Midnight Train*, for exploring story mechanics and their configuration.
+The editor runs from a single HTML file, with no dependency installation, account, or backend required. Open it locally in a browser, or use the web version at https://verseforges.com/story . It includes Chinese and English interfaces, along with both language versions of the built-in example, *The Midnight Train*, for exploring story mechanics and their configuration.
 
 ### Features
 
@@ -62,7 +62,7 @@ The editor runs from a single HTML file, with no dependency installation, accoun
 
 ### How to use
 
-1. Open the editor HTML file in a browser, or visit a deployed website.
+1. Open the editor HTML file in a browser, or use the web version at https://verseforges.com/story .
 2. Explore the built-in example or create a new story.
 3. Write node text, connect branches, and add mechanics as needed.
 4. Play through the preview and check your paths with story inspection and author testing tools.
