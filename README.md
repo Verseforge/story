@@ -33,7 +33,7 @@ Verseforge Story 是一个面向个人创作者的本地文游编辑器。通过
 
 通过 HTTPS 访问网页版并完成首次资源缓存后，可在支持的浏览器中添加到主屏幕或安装为应用，之后断网也能重新打开编辑器。首次访问仍需联网；离线使用前，请先关闭页面并断网重开确认缓存成功。
 
-更新在后台准备，不会强制刷新正在编辑的页面。新版准备好后，关闭所有 Story 标签页和应用窗口，再次打开时使用新版。缓存保存的是程序资源，故事仍保存在浏览器本地；请继续定期导出备份。
+更新在后台准备，不会强制刷新正在编辑的页面。新版就绪时弹窗提醒一次，确认后不再重复提醒同一更新。新版准备好后，关闭所有 VF Story 标签页和应用窗口，再次打开时使用新版。缓存保存的是程序资源，故事仍保存在浏览器本地；请继续定期导出备份。
 
 ### 本地数据与注意事项
 
@@ -81,7 +81,7 @@ The local single-file editor does not require separate icon files. For deploymen
 
 After opening the HTTPS website and completing the initial resource cache, you can add it to the home screen or install it in a supported browser, then reopen the editor offline. The first visit requires a connection. Before relying on offline access, close the page and reopen it with the network disconnected to confirm caching succeeded.
 
-Updates are prepared in the background without forcing a reload while you edit. Once an update is ready, close all Story tabs and app windows; the next launch uses the new version. The cache contains application resources, while stories remain in browser storage. Continue exporting backups regularly.
+Updates are prepared in the background without forcing a reload while you edit. A dialog announces each ready update once; dismissing it acknowledges that update. Once an update is ready, close all VF Story tabs and app windows; the next launch uses the new version. The cache contains application resources, while stories remain in browser storage. Continue exporting backups regularly.
 
 ### Local data and important notes
 
@@ -107,4 +107,5 @@ by [@Verseforge](https://github.com/Verseforge)
 ## 版权声明 / Copyright
 
 © 2026 Verseforge. 保留所有权利。All rights reserved.
+
 

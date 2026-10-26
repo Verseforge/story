@@ -1,14 +1,15 @@
 'use strict';
-// Change CACHE_BUILD whenever index.html, this worker, the manifest or an icon changes.
+// CACHE_BUILD is stamped automatically by the repository GitHub Action.
 // Keep sw.js at the same URL. Never change the editor's v1 database namespace for a cache update.
-const CACHE_BUILD = '1.0.0-pwa1';
+const CACHE_BUILD = '1.0.1-bootstrap';
 const ROOT = new URL('./', self.location.href);
 const CACHE_PREFIX = 'vf-story-shell:' + encodeURIComponent(ROOT.href) + ':';
 const CACHE_NAME = CACHE_PREFIX + CACHE_BUILD;
 const APP_FILES = [
   'index.html', 'site.webmanifest',
   'assets/icons/web-app-manifest-192x192.png',
-  'assets/icons/web-app-manifest-512x512.png'
+  'assets/icons/web-app-manifest-512x512.png',
+  'assets/icons/web-app-manifest-maskable-512x512.png'
 ];
 const APP_URLS = APP_FILES.map(path => new URL(path, ROOT).href);
 const INDEX_URL = APP_URLS[0];
@@ -45,3 +46,7 @@ self.addEventListener('fetch', event => {
     return cached || fetch(request);
   })());
 });
+
+
+// The waiting worker reports its exact automatic cache identity without activating itself.
+self.addEventListener('message',event=>{if(event.data?.type==='VF_BUILD_ID')event.ports?.[0]?.postMessage({build:CACHE_BUILD});});
