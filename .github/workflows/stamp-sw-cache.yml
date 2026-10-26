@@ -1,0 +1,57 @@
+name: Update service worker cache build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - site.webmanifest
+      - assets/icons/web-app-manifest-192x192.png
+      - assets/icons/web-app-manifest-512x512.png
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: stamp-sw-cache
+  cancel-in-progress: false
+
+jobs:
+  stamp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Write content fingerprint into sw.js
+        id: stamp
+        run: |
+          set -euo pipefail
+          HASH=$(cat index.html site.webmanifest \
+            assets/icons/web-app-manifest-192x192.png \
+            assets/icons/web-app-manifest-512x512.png | sha256sum | cut -c1-12)
+          BUILD="auto-$HASH"
+          grep -q "^const CACHE_BUILD = '" sw.js
+          sed -i "s/^const CACHE_BUILD = '[^']*';/const CACHE_BUILD = '$BUILD';/" sw.js
+          grep -n "^const CACHE_BUILD" sw.js
+          if git diff --quiet -- sw.js; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit sw.js
+        if: steps.stamp.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sw.js
+          git commit -m "Update service worker cache build"
+          git push
+
+      - name: Rebuild GitHub Pages
+        if: steps.stamp.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Pages rebuild request skipped"
