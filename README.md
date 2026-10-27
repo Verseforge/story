@@ -29,6 +29,14 @@ Verseforge Story 是一个面向个人创作者的本地文游编辑器。通过
 
 本地单文件使用不需要额外的图标文件。部署时可将编辑器命名为 `index.html`；`site.webmanifest`、`sw.js` 与 `index.html` 同级，安装图标位于 `assets/icons/`。
 
+### Android 应用
+
+[下载最新安卓版 APP](https://verseforges.com/story/download/Verseforge-Story.apk)
+
+下载 `Verseforge-Story.apk` 后，在 Android 设备上安装使用；网页版“关于”中也提供同一下载入口。下载链接固定，更新时可从同一地址获取最新版安装包。
+
+Android 应用与网页版的数据分别保存在各自的本地环境中，不会自动同步。转移故事、素材与设置请使用导入、导出或编辑器备份，更新或卸载应用前请先备份重要内容。
+
 ### 网页离线使用
 
 通过 HTTPS 访问网页版并完成首次资源缓存后，可在支持的浏览器中添加到主屏幕或安装为应用，之后断网也能重新打开编辑器。首次访问仍需联网；离线使用前，请先关闭页面并断网重开确认缓存成功。
@@ -76,6 +84,14 @@ The editor runs from a single HTML file, with no dependency installation, accoun
 5. Export a standalone story HTML file for readers to open and play in a browser.
 
 The local single-file editor does not require separate icon files. For deployment, name the editor `index.html`; keep `site.webmanifest` and `sw.js` beside `index.html`, with installation icons under `assets/icons/`.
+
+### Android app
+
+[Download the latest Android app](https://verseforges.com/story/download/Verseforge-Story.apk)
+
+Download `Verseforge-Story.apk` and install it on an Android device. The web editor’s About dialog offers the same download. This fixed address always points to the latest uploaded APK.
+
+The Android app and the web version store data in separate local environments and do not sync automatically. Use import, export, or editor backups to transfer stories, materials, and settings. Back up important work before updating or uninstalling the app.
 
 ### Offline web use
 
