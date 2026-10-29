@@ -609,6 +609,29 @@ input.placeholder-scroll-covered::placeholder{color:transparent!important;opacit
 .toast.toast-with-undo{display:flex;align-items:center;text-align:left;pointer-events:auto}.toast-message{flex:1;min-width:0;overflow-wrap:anywhere}.toast-undo{flex:none;align-self:stretch;display:flex;align-items:center;justify-content:center;border:0;border-left:1px solid var(--toast-text);border-left-color:color-mix(in srgb,var(--toast-text) 40%,transparent);border-radius:0;background:transparent;color:var(--toast-action,#a8d5ff);font:inherit;font-weight:800;line-height:1.4;padding:0 0 0 12px;margin-left:12px;min-height:24px;white-space:nowrap}.toast-undo:disabled{opacity:.55}html[data-app-theme="dark-cyan"],html[data-app-theme="deep-purple"],html[data-app-theme="neon-blue"]{--warning:#ffbf69;--toast-action:#123e70}
 
 .node.quick-selected::after{content:"";position:absolute;inset:-7px;border-radius:20px;box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 38%,transparent);pointer-events:none;animation:quickSelectedPulse 3.2s ease-in-out infinite}.node:focus-visible{outline:2px solid var(--accent);outline-offset:3px}@media(prefers-reduced-motion:reduce){.node.quick-selected::after{animation:none}}
+    #storyCreationGuide{position:fixed;inset:0;z-index:2147483000;pointer-events:none;touch-action:none;user-select:none;-webkit-user-select:none}
+    #storyCreationGuide .story-guide-mask{position:fixed;background:rgba(0,0,0,.62);pointer-events:auto;touch-action:none}
+    #storyCreationGuide .story-guide-ring{position:fixed;border:3px solid var(--accent);border-radius:12px;pointer-events:none}
+    #storyCreationGuide .story-guide-ring.story-guide-unframed{border:0}
+    #storyCreationGuide .story-guide-line{position:fixed;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+    #storyCreationGuide line{stroke:var(--accent);stroke-width:2;stroke-linecap:round}
+    #storyCreationGuide .story-guide-copy{position:fixed;margin:0;padding:10px 12px;background:var(--surface);border-radius:10px;color:var(--accent);font-size:15px;font-weight:750;line-height:1.55;pointer-events:auto}
+    #nodeCountdownToggle{margin-left:auto;min-width:34px;min-height:34px;padding:5px;border:0;border-radius:9px;background:transparent;color:var(--text);display:inline-flex;align-items:center;justify-content:center}
+    #nodeCountdownToggle .svg-icon{width:16px;height:16px;stroke-width:2.6;transition:transform .16s ease}
+    #nodeCountdownToggle[aria-expanded="true"] .svg-icon{transform:rotate(180deg)}
+    @media(prefers-reduced-motion:reduce){#nodeCountdownToggle .svg-icon{transition:none}}
+    .modal[tabindex="-1"]:focus{outline:none}
+    #storyCreationGuide .story-guide-mask{background:transparent}
+    #storyCreationGuide .story-guide-ring{box-shadow:0 0 0 100vmax rgba(0,0,0,.62)}
+    #storyCreationGuide .story-guide-copy{width:max-content;max-width:calc(100vw - 24px);text-align:left}
+    #nodeColorValue.node-card-hex-btn{padding:0;border:0;background:transparent;color:var(--text);font-size:12px;font-weight:750;line-height:inherit;cursor:pointer}
+    #nodeColorValue.node-card-hex-btn.is-custom{color:var(--accent)}
+    .node-card-color-hint{margin-top:10px}
+    .editor-tool-dialog.node-card-color-dialog .modal{width:min(450px,100%)!important}
+    .node-card-color-dialog .modal-scroll{padding-bottom:18px}
+    .node-card-color-dialog .theme-color-picker-grid{grid-template-columns:repeat(auto-fit,34px);width:min(100%,286px);justify-content:start;gap:8px;padding:0;margin-bottom:18px}
+    .node-card-color-dialog .theme-picker-swatch{width:34px;height:34px;min-width:0;aspect-ratio:auto}
+    .node-card-color-error{margin:8px 0 0;color:var(--danger)}
 </style>
 <!-- Icons: SVG favicon (follows dark mode), PNG fallback, iOS home-screen icon. Embedded for offline single-file use. -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48c3R5bGU+cGF0aHtzdHJva2U6IzAwNjZFQX1AbWVkaWEocHJlZmVycy1jb2xvci1zY2hlbWU6ZGFyayl7cGF0aHtzdHJva2U6IzVDOURGRn19PC9zdHlsZT48ZyBmaWxsPSJub25lIiBzdHJva2U9IiMwMDY2RUEiIHN0cm9rZS13aWR0aD0iNDUuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNTguNyA0NDMuNlYxMzcuN0E2OS4zIDY5LjMgMCAwIDEgMTI4IDY4LjRIMjI4LjNWMzkwLjdIMTcyLjZDMTIyLjEgMzkwLjcgNTguNyAzOTQuMyA1OC43IDQ0My42Ii8+PHBhdGggZD0iTTQ1My4zIDQ0My42VjEzNy43QTY5LjMgNjkuMyAwIDAgMCAzODQgNjguNEgyODMuN1YzOTAuN0gzMzkuNEMzODkuOSAzOTAuNyA0NTMuMyAzOTQuMyA0NTMuMyA0NDMuNiIvPjwvZz48L3N2Zz4K">
@@ -693,7 +716,7 @@ input.placeholder-scroll-covered::placeholder{color:transparent!important;opacit
   <div class="modal-layer high hidden" id="globalSearchLayer"><section class="modal wide" role="dialog" aria-modal="true" aria-label="全局搜索"><div class="modal-head"><h2>全局搜索</h2><span class="spacer"></span><button class="icon-btn" id="closeGlobalSearchBtn" aria-label="关闭"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div class="modal-scroll"><p class="hint" style="margin-top:0">搜索当前故事中的节点、故事系统对象、测试场景和编辑器功能。支持名称、ID、相关词与常见同义词。</p><div class="global-search-row"><input id="globalSearchInput" type="search" maxlength="120" placeholder="例如：金币、主题、状态响应、测试场景" autocomplete="off"><button class="primary-btn" id="globalSearchRunBtn" type="button">搜索</button></div><p class="global-search-count hidden" id="globalSearchCount"></p><div class="global-search-results" id="globalSearchResults"><div class="global-search-empty">输入关键词后点击“搜索”。</div></div></div><div class="modal-actions"><button class="text-btn" id="clearGlobalSearchBtn" type="button" data-editor-mutates="true" data-editor-commit="true">清除搜索结果</button><span class="spacer"></span><button class="text-btn" id="cancelGlobalSearchBtn" type="button" data-editor-action="cancel">取消</button></div></section></div>
   <div class="modal-layer high hidden" id="shortcutHelpLayer"><section class="modal small" role="dialog" aria-modal="true" aria-label="快捷键说明"><div class="modal-head"><h2>快捷键与操作</h2><span class="spacer"></span><button class="icon-btn" id="closeShortcutHelpBtn" aria-label="关闭"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div class="modal-scroll"><section class="desktop-shortcuts"><h3 class="shortcut-section-title">编辑器</h3><div class="shortcut-list"><div class="shortcut-row"><span>保存当前版本</span><div class="shortcut-keys"><kbd class="kbd">Ctrl / ⌘</kbd><span class="shortcut-key-plus">＋</span><kbd class="kbd">S</kbd></div></div><div class="shortcut-row"><span>关闭弹窗</span><div class="shortcut-keys"><kbd class="kbd">Esc</kbd></div></div><div class="shortcut-row"><span>关闭所有重叠弹窗（至少 3 层）</span><div class="shortcut-keys"><span class="hint">长按</span><kbd class="kbd">Esc</kbd><span class="hint">1 秒</span></div></div><div class="shortcut-row"><span>全局搜索</span><div class="shortcut-keys"><kbd class="kbd">Ctrl / ⌘</kbd><span class="shortcut-key-plus">＋</span><kbd class="kbd">K</kbd></div></div></div></section><section class="desktop-shortcuts"><h3 class="shortcut-section-title">可视化画布</h3><div class="shortcut-list"><div class="shortcut-row"><span>撤销上一次画布修改</span><div class="shortcut-keys"><kbd class="kbd">Ctrl / ⌘</kbd><span class="shortcut-key-plus">＋</span><kbd class="kbd">Z</kbd></div></div><div class="shortcut-row"><span>重做上一次画布撤销</span><div class="shortcut-keys"><kbd class="kbd">Ctrl</kbd><span class="shortcut-key-plus">＋</span><kbd class="kbd">Y</kbd><span class="hint">或</span><kbd class="kbd">Ctrl / ⌘</kbd><span class="shortcut-key-plus">＋</span><kbd class="kbd">Shift</kbd><span class="shortcut-key-plus">＋</span><kbd class="kbd">Z</kbd></div></div><div class="shortcut-row"><span>查找节点</span><div class="shortcut-keys"><kbd class="kbd">Ctrl / ⌘</kbd><span class="shortcut-key-plus">＋</span><kbd class="kbd">F</kbd></div></div><div class="shortcut-row"><span>查看 / 退出测试覆盖</span><div class="shortcut-keys"><kbd class="kbd">Ctrl / ⌘</kbd><span class="shortcut-key-plus">＋</span><kbd class="kbd">B</kbd></div></div><div class="shortcut-row"><span>进入 / 退出快速操作</span><div class="shortcut-keys"><kbd class="kbd">Ctrl / ⌘</kbd><span class="shortcut-key-plus">＋</span><kbd class="kbd">Q</kbd></div></div></div><p class="hint shortcut-note">撤销与重做记录可视化图谱里的节点修改；按住画布背景拖动移动视图，滚动鼠标滚轮缩放，也可以使用顶部的 ＋ / −。</p></section><section class="mobile-shortcuts"><h3 class="shortcut-section-title">可视化画布</h3><p class="hint shortcut-note">单指按住画布背景拖动移动视图；双指缩放改变比例，也可以使用顶部的 ＋ / −。</p></section><section class="player-shortcuts"><h3 class="shortcut-section-title"><span class="desktop-copy">故事预览与导出的故事 HTML</span><span class="mobile-copy">导出的故事 HTML（若在电脑端运行）</span></h3><div class="shortcut-list"><div class="shortcut-row"><span>关闭弹窗或取消操作</span><div class="shortcut-keys"><kbd class="kbd">Esc</kbd></div></div><div class="shortcut-row"><span>继续 / 跳过可交互文字动画</span><div class="shortcut-keys"><kbd class="kbd">Space</kbd></div></div><div class="shortcut-row"><span>过场节点继续</span><div class="shortcut-keys"><span class="hint">连续按两次</span><kbd class="kbd">Space</kbd></div></div><div class="shortcut-row"><span>选择第 1～9 个选项</span><div class="shortcut-keys"><kbd class="kbd">1</kbd><span>…</span><kbd class="kbd">9</kbd></div></div></div></section></div><div class="modal-actions"><button class="text-btn" id="dismissShortcutHelpBtn" type="button" data-editor-action="close">关闭</button></div></section></div>
 
-  <div class="modal-layer high hidden short-input-dialog" id="newStoryLayer"><section class="modal small" role="dialog" aria-modal="true" aria-label="新建故事"><div class="modal-head"><h2>新建故事</h2><span class="spacer"></span><button class="icon-btn" id="closeNewStoryBtn" aria-label="关闭"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div class="modal-scroll"><div class="field"><label for="newStoryName">故事名称</label><input id="newStoryName" maxlength="80" value="新故事" placeholder="给故事起个名字"></div><p class="hint">Verseforge Story 会自动创建首页卡片和故事开场节点。</p></div><div class="modal-actions"><button class="text-btn hidden" id="restoreExampleStoryBtn" data-editor-mutates="true" data-editor-commit="true">恢复示例故事</button><button class="text-btn" id="cancelNewStoryBtn" data-editor-action="cancel">取消</button><button class="primary-btn" id="createStoryBtn" data-editor-mutates="true" data-editor-commit="true">创建故事</button></div></section></div><div class="modal-layer hidden" id="editorLayer"><section class="modal wide" role="dialog" aria-modal="true" aria-label="编辑节点"><div class="modal-head"><h2 id="editorDialogTitle">编辑节点</h2><span class="spacer"></span><button class="icon-btn" id="closeEditorBtn" aria-label="关闭"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div class="modal-scroll"><div class="system-node-note hidden" id="homeSystemNote"><strong>首页由系统固定管理</strong><span>故事名称、作者和简介请在“设置”中修改；首页会自动连接当前故事开场节点。</span></div><div class="field editor-standard-field" id="nodeTitleField"><label for="nodeTitle">标题</label><input id="nodeTitle" maxlength="100" /><label class="round-check-row"><input type="checkbox" id="nodeTitleVisible" checked><span></span>预览和导出时显示标题</label></div><div class="field editor-standard-field" id="nodePrefixField"><label for="nodePrefix">前缀</label><input id="nodePrefix" maxlength="60" placeholder="可填写，例如：神秘人、箱子、【系统】" /></div><div class="field editor-standard-field" id="nodeBodyField"><label>正文 <span class="hint" id="wordCount"></span></label><textarea id="nodeBody" placeholder="写下这个节点的内容……"></textarea><div class="editor-tools"><div class="editor-tool-row"><button class="chip-btn" id="insertLinkBtn">＋ 添加选项</button><button class="chip-btn" id="syncLinksBtn">补齐目标节点</button><button class="chip-btn" id="textAnimationBtn">文字动画</button></div><div class="editor-tool-row"><button class="chip-btn" id="insertBoldBtn">粗体</button><button class="chip-btn" id="insertItalicBtn">斜体</button><button class="chip-btn" id="insertStrikeBtn" data-editor-mutates="true" data-editor-commit="true">删除线</button></div><div class="editor-tool-row"><button class="chip-btn" id="insertColorBtn" aria-haspopup="menu">彩色文本</button><button class="chip-btn" id="insertVariableBtn" type="button" title="插入 ${变量名}">故事变量</button><button class="chip-btn" id="insertEntityBtn" type="button">故事实体</button></div></div><p class="hint editor-syntax-help">支持 <code>[[目标节点]]</code>、<code>[[选项文本-&gt;目标节点]]</code>、<code>**粗体**</code>、<code>*斜体*</code>、<code>~~删除线文本~~</code>、<code>@red(彩色文本)</code>、<code>${变量名}</code>、<code>${实体ID.变量名}</code>。长按“彩色文本”可滑动选色。<button class="editor-syntax-toggle" id="nodeSyntaxExpandBtn" type="button">展开</button><span class="hidden" id="nodeSyntaxMore"> 单个 <code>[[目标节点]]</code> 表示无选项过场；带选项文本的链接用于玩家选择。<code>**粗体**</code>、<code>*斜体*</code>、<code>~~删除线~~</code> 和 <code>@red(...)</code> 只改变文字外观；文字动画在当前节点统一设置。<code>${变量名}</code> 插入故事或节点变量当前值；<code>${实体ID.变量名}</code> 插入实体字段，实体玩家显示名称可用 <code>${实体ID.displayName}</code>。选项文字只支持实体或剧情角色引用（例如 <code>${target.displayName}</code>），不解析单独的 <code>${故事变量}</code>；引用失效时玩家端会显示 <code>???</code>，故事检验会提醒。运行时只改变玩家看到的选项文字，不改变该选项的作者侧身份。需要长期影响剧情的内容请在“故事系统”中管理。 <button class="editor-syntax-toggle" id="nodeSyntaxCollapseBtn" type="button">收起</button></span></p></div><div class="field editor-standard-field" id="nodeAltBodiesField"><label><span data-alt-label>替换正文</span> <span class="hint" id="nodeAltBodyCount">0 项</span></label><div class="local-variable-summary"><div><strong id="nodeAltBodySummaryTitle">该节点还没添加替换正文</strong><small id="nodeAltBodySummaryText">按条件显示另一版完整正文，取代原正文。</small></div><button class="chip-btn" id="manageNodeAltBodiesBtn" type="button">管理</button></div></div><div class="field editor-standard-field" id="nodeOptionsField"><label id="nodeOptionsLabel">节点选项</label><div class="link-summary" id="linkSummary"></div></div><div class="field editor-standard-field" id="nodeLocalVariablesField"><label>节点变量 <span class="hint" id="nodeLocalVariableCount">0 项</span></label><div class="local-variable-summary"><div><strong id="nodeLocalVariableSummaryTitle">该节点还没添加特殊变量</strong><small id="nodeLocalVariableSummaryText">进入节点时抽取，供当前节点正文调用。</small></div><button class="chip-btn" id="manageNodeLocalVariablesBtn" type="button">管理</button></div><p class="hint">节点变量只属于该节点，不会写入故事变量或长期变化记录。每次进入节点重新抽取；存档会保存本页已经抽到的值。</p></div><div class="field editor-standard-field" id="nodeEntryNoticeField"><label>节点内提示</label><div class="system-notice-summary"><div><strong id="nodeEntryNoticeTitle">未设置</strong><small id="nodeEntryNoticeSummary">可显示情节提示或警告。</small></div><button class="chip-btn" id="nodeEntryNoticeBtn" type="button">设置</button></div></div><div class="field editor-standard-field" id="nodeInteractionField"><label>玩家交互</label><div class="round-options interaction-mode-options" id="nodeInteractionMode"><label><input type="radio" name="nodeInteractionMode" value="choices"><span></span>选项</label><label><input type="radio" name="nodeInteractionMode" value="fill"><span></span>填写</label><label><input type="radio" name="nodeInteractionMode" value="match"><span></span>输入匹配</label></div><div class="input-mode-summary hidden" id="nodeInputSummary"><div><strong id="nodeInputSummaryTitle">玩家填写</strong><small id="nodeInputSummaryText">尚未设置</small></div><button class="chip-btn" id="nodeInputSettingsBtn" type="button">设置</button></div><p class="hint" id="nodeInteractionHint">“选项”读取 <code>[[选项文本-&gt;目标节点]]</code>；仅有一个 <code>[[目标节点]]</code> 时作为无选项过场。“填写”和“输入匹配”会改用输入框。</p></div><div class="field editor-standard-field" id="nodeEventCallField"><details class="event-node-settings" id="nodeEventCallDetails"><summary><span style="margin-left:6px">故事事件</span></summary><div class="event-node-settings-body"><label class="round-check-row" style="margin-top:0!important"><input type="checkbox" id="nodeEventCallEnabled"><span></span>进入此节点时抽取事件</label><div id="nodeEventCallInputs"><div class="field" style="margin-top:12px"><label for="nodeEventCallPool">事件池</label><select id="nodeEventCallPool"></select></div><div class="field"><label for="nodeEventCallFallback">无可用事件时前往</label><select id="nodeEventCallFallback" data-node-picker></select></div><button class="chip-btn" id="nodeEventManagePoolsBtn" type="button">管理故事事件</button><p class="hint">启用后，这个节点只作为隐藏的分流入口：真正进入时会按当前状态筛选事件并直接显示抽中的普通节点，本节点正文和普通去向不会显示。状态变化应写在进入此节点之前的选项，或写在抽中的事件节点里。</p></div></div></details></div><div class="field editor-standard-field" id="nodeEntityBindingField"><details class="event-node-settings" id="nodeEntityBindingDetails"><summary><span style="margin-left:6px">进入时选取实体</span></summary><div class="event-node-settings-body"><label class="round-check-row" style="margin-top:0!important"><input type="checkbox" id="nodeEntityBindingEnabled"><span></span>进入此节点时随机选取一个已有实体</label><div id="nodeEntityBindingInputs"><div class="field" style="margin-top:12px"><label for="nodeEntityBindingTemplate">实体模板</label><select id="nodeEntityBindingTemplate"></select></div><div class="entity-token-grid"><div class="field"><label for="nodeEntityBindingName">剧情角色绑定名</label><input id="nodeEntityBindingName" maxlength="40" placeholder="target"></div><div class="field"><label for="nodeEntityBindingFallback">无候选兜底称呼</label><input id="nodeEntityBindingFallback" maxlength="80" placeholder="某个人"></div></div><div class="logic-section" style="margin-top:8px"><div class="entity-rule-subhead" style="margin-top:0"><strong>候选字段条件</strong><span class="spacer"></span><button class="chip-btn" id="addNodeEntityBindingConditionBtn" type="button">＋ 添加条件</button></div><div class="logic-list" id="nodeEntityBindingConditionList"></div><div class="round-options logic-mode" id="nodeEntityBindingConditionMode"><label><input type="radio" name="nodeEntityBindingConditionMode" value="all" checked><span></span>全部满足</label><label><input type="radio" name="nodeEntityBindingConditionMode" value="any"><span></span>满足任一</label></div></div><small class="entry-effect-group-status" id="nodeEntityBindingStatus"></small><p class="hint">候选只来自该模板已经生成且仍有效的实例；隐藏不会排除。选中后可用 <code>${target.name}</code> 或 <code>${target.字段变量名}</code> 引用，条件和状态变化里也可选择这个剧情角色。离开节点后绑定继续保留，直到再次选取同名角色或重新开始；无候选时会清空旧绑定，兜底称呼只用于 <code>${target.name}</code> 的文字显示。</p></div></div></details></div><div class="field editor-standard-field" id="nodeEntryEffectGroupField"><details class="event-node-settings" id="nodeEntryEffectGroupDetails"><summary><span style="margin-left:6px">进入时执行变化组</span></summary><div class="event-node-settings-body entry-effect-group-body"><div class="field" style="margin-bottom:10px"><label for="nodeEntryEffectGroupSelect">状态变化组</label><select id="nodeEntryEffectGroupSelect"></select><small class="entry-effect-group-status" id="nodeEntryEffectGroupStatus">不执行</small></div><button class="chip-btn" id="nodeEntryEffectGroupManageBtn" type="button">管理状态变化组</button><p class="hint">真正进入节点时执行一次；刷新、重绘和读档恢复不会重复执行。若变化触发状态跳转，会直接前往目标节点，不先闪现当前正文。事件入口节点不使用此设置。</p></div></details></div><div class="field editor-standard-field" id="nodeChapterField"><label for="nodeChapter">所属章节</label><select id="nodeChapter"></select><p class="hint">章节只负责整理节点；选项仍然可以跨章节连接。</p></div><div class="field editor-standard-field" id="nodeTimerField"><div class="countdown-title-row"><span>倒计时 <button class="tiny-help-btn" id="countdownHelpBtn" type="button" aria-label="倒计时说明">?</button></span></div><label class="round-check-row"><input type="checkbox" id="nodeCountdownEnabled"><span></span>启用节点倒计时</label><div id="nodeCountdownInputs"><div class="countdown-grid two"><label>分钟<input id="nodeCountdownMinutes" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" value="0"></label><label>秒<input id="nodeCountdownSeconds" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" value="10"></label></div><div class="countdown-warning-row"><span>剩余</span><input id="nodeCountdownWarning" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" value="3"><span>秒时醒目显示</span></div><div class="field" style="margin-top:11px"><label for="nodeCountdownTarget">时间耗尽时前往</label><select id="nodeCountdownTarget" data-node-picker></select></div><p class="hint">正文与选项完整显示后开始计时；在限时内做出选择会正常跳转，时间耗尽则自动前往指定节点。</p></div><label class="round-check-row"><input type="checkbox" id="nodeFreezeCountdown"><span></span>停留在此节点时冻结故事 / 章节倒计时</label></div><div class="field editor-standard-field" id="nodeSaveField"><label>存档</label><label class="round-check-row"><input type="checkbox" id="nodeDisableSave"><span></span>禁用当前节点的存档中心</label><p class="hint">玩家仍可暂停、使用其他菜单功能并返回首页；只是在此节点无法打开存档中心，因此不能在这里保存或读取存档。返回首页后可正常进入存档中心。</p></div><div class="field editor-standard-field" id="nodeHistoryField"><label>故事历程</label><label class="round-check-row"><input type="checkbox" id="nodeDisableHistory"><span></span>当前节点禁止查看故事历程</label><label class="round-check-row"><input type="checkbox" id="nodeArchiveHistory"><span></span>当前节点收录完整故事历程</label><p class="hint">启用收录后，无后续操作的节点会在到达时保存；存在选项或输入时，会在玩家完成本节点操作后保存至“我的档案”。</p></div><div class="field editor-standard-field" id="nodeTagsField"><label for="nodeTags">标签</label><input id="nodeTags" placeholder="可填写，例如：主线 夜晚 城镇" /><p class="hint">用空格分隔多个标签。在可视化画布中点击标签改色。</p></div><div class="field editor-standard-field" id="nodeThemeField"><label>节点主题</label><div class="node-theme-row"><div><label class="round-check-row" style="margin:0"><input type="checkbox" id="nodeThemeEnabled"><span></span>启用节点主题</label><small class="node-theme-status" id="nodeThemeStatus">跟随全局主题</small></div><button class="chip-btn" id="nodeThemeSettingsBtn" type="button">设置</button></div><p class="hint">单独设置当前节点的主题配色。</p></div><div class="field editor-standard-field" id="nodeColorField"><label>节点卡片颜色 <span class="hint" id="nodeColorValue"></span></label><div class="color-control"><input id="nodeColor" type="color" value="#0056b3" /><div class="color-swatches" id="colorSwatches"></div></div></div><div class="field editor-standard-field" id="nodeAuthorNoteField"><label for="nodeAuthorNote">作者备注</label><textarea id="nodeAuthorNote" rows="5" maxlength="6000" placeholder="可写提示、待修改内容或创作备忘" aria-describedby="nodeAuthorNoteHint"></textarea><p class="hint" id="nodeAuthorNoteHint">仅保存在编辑器与故事 JSON 中，故事预览可见；不会计入正文统计，也不会进入正式导出的故事。</p></div></div><div class="modal-actions editor-footer"><button class="text-btn" id="setStartBtn" data-editor-mutates="true" data-editor-commit="true">设为故事开场</button><button class="text-btn" id="copyNodeBtn">复制节点</button><button class="danger-btn" id="deleteNodeBtn" data-editor-mutates="true" data-editor-commit="true">删除节点</button></div></section></div>
+  <div class="modal-layer high hidden short-input-dialog" id="newStoryLayer"><section class="modal small" role="dialog" aria-modal="true" aria-label="新建故事"><div class="modal-head"><h2>新建故事</h2><span class="spacer"></span><button class="icon-btn" id="closeNewStoryBtn" aria-label="关闭"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div class="modal-scroll"><div class="field"><label for="newStoryName">故事名称</label><input id="newStoryName" maxlength="80" value="新故事" placeholder="给故事起个名字"></div><p class="hint">Verseforge Story 会自动创建首页卡片和故事开场节点。</p></div><div class="modal-actions"><button class="text-btn hidden" id="restoreExampleStoryBtn" data-editor-mutates="true" data-editor-commit="true">恢复示例故事</button><button class="text-btn" id="cancelNewStoryBtn" data-editor-action="cancel">取消</button><button class="primary-btn" id="createStoryBtn" data-editor-mutates="true" data-editor-commit="true">创建故事</button></div></section></div><div class="modal-layer hidden" id="editorLayer"><section class="modal wide" role="dialog" aria-modal="true" aria-label="编辑节点"><div class="modal-head"><h2 id="editorDialogTitle">编辑节点</h2><span class="spacer"></span><button class="icon-btn" id="closeEditorBtn" aria-label="关闭"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div class="modal-scroll"><div class="system-node-note hidden" id="homeSystemNote"><strong>首页由系统固定管理</strong><span>故事名称、作者和简介请在“设置”中修改；首页会自动连接当前故事开场节点。</span></div><div class="field editor-standard-field" id="nodeTitleField"><label for="nodeTitle">标题</label><input id="nodeTitle" maxlength="100" /><label class="round-check-row"><input type="checkbox" id="nodeTitleVisible" checked><span></span>预览和导出时显示标题</label></div><div class="field editor-standard-field" id="nodePrefixField"><label for="nodePrefix">前缀</label><input id="nodePrefix" maxlength="60" placeholder="可填写，例如：神秘人、箱子、【系统】" /></div><div class="field editor-standard-field" id="nodeBodyField"><label>正文 <span class="hint" id="wordCount"></span></label><textarea id="nodeBody" placeholder="写下这个节点的内容……"></textarea><div class="editor-tools"><div class="editor-tool-row"><button class="chip-btn" id="insertLinkBtn">＋ 添加选项</button><button class="chip-btn" id="syncLinksBtn">补齐目标节点</button><button class="chip-btn" id="textAnimationBtn">文字动画</button></div><div class="editor-tool-row"><button class="chip-btn" id="insertBoldBtn">粗体</button><button class="chip-btn" id="insertItalicBtn">斜体</button><button class="chip-btn" id="insertStrikeBtn" data-editor-mutates="true" data-editor-commit="true">删除线</button></div><div class="editor-tool-row"><button class="chip-btn" id="insertColorBtn" aria-haspopup="menu">彩色文本</button><button class="chip-btn" id="insertVariableBtn" type="button" title="插入 ${变量名}">故事变量</button><button class="chip-btn" id="insertEntityBtn" type="button">故事实体</button></div></div><p class="hint editor-syntax-help">支持 <code>[[目标节点]]</code>、<code>[[选项文本-&gt;目标节点]]</code>、<code>**粗体**</code>、<code>*斜体*</code>、<code>~~删除线文本~~</code>、<code>@red(彩色文本)</code>、<code>${变量名}</code>、<code>${实体ID.变量名}</code>。长按“彩色文本”可滑动选色。<button class="editor-syntax-toggle" id="nodeSyntaxExpandBtn" type="button">展开</button><span class="hidden" id="nodeSyntaxMore"> 单个 <code>[[目标节点]]</code> 表示无选项过场；带选项文本的链接用于玩家选择。<code>**粗体**</code>、<code>*斜体*</code>、<code>~~删除线~~</code> 和 <code>@red(...)</code> 只改变文字外观；文字动画在当前节点统一设置。<code>${变量名}</code> 插入故事或节点变量当前值；<code>${实体ID.变量名}</code> 插入实体字段，实体玩家显示名称可用 <code>${实体ID.displayName}</code>。选项文字只支持实体或剧情角色引用（例如 <code>${target.displayName}</code>），不解析单独的 <code>${故事变量}</code>；引用失效时玩家端会显示 <code>???</code>，故事检验会提醒。运行时只改变玩家看到的选项文字，不改变该选项的作者侧身份。需要长期影响剧情的内容请在“故事系统”中管理。 <button class="editor-syntax-toggle" id="nodeSyntaxCollapseBtn" type="button">收起</button></span></p></div><div class="field editor-standard-field" id="nodeAltBodiesField"><label><span data-alt-label>替换正文</span> <span class="hint" id="nodeAltBodyCount">0 项</span></label><div class="local-variable-summary"><div><strong id="nodeAltBodySummaryTitle">该节点还没添加替换正文</strong><small id="nodeAltBodySummaryText">按条件显示另一版完整正文，取代原正文。</small></div><button class="chip-btn" id="manageNodeAltBodiesBtn" type="button">管理</button></div></div><div class="field editor-standard-field" id="nodeOptionsField"><label id="nodeOptionsLabel">节点选项</label><div class="link-summary" id="linkSummary"></div></div><div class="field editor-standard-field" id="nodeLocalVariablesField"><label>节点变量 <span class="hint" id="nodeLocalVariableCount">0 项</span></label><div class="local-variable-summary"><div><strong id="nodeLocalVariableSummaryTitle">该节点还没添加特殊变量</strong><small id="nodeLocalVariableSummaryText">进入节点时抽取，供当前节点正文调用。</small></div><button class="chip-btn" id="manageNodeLocalVariablesBtn" type="button">管理</button></div><p class="hint">节点变量只属于该节点，不会写入故事变量或长期变化记录。每次进入节点重新抽取；存档会保存本页已经抽到的值。</p></div><div class="field editor-standard-field" id="nodeEntryNoticeField"><label>节点内提示</label><div class="system-notice-summary"><div><strong id="nodeEntryNoticeTitle">未设置</strong><small id="nodeEntryNoticeSummary">可显示情节提示或警告。</small></div><button class="chip-btn" id="nodeEntryNoticeBtn" type="button">设置</button></div></div><div class="field editor-standard-field" id="nodeInteractionField"><label>玩家交互</label><div class="round-options interaction-mode-options" id="nodeInteractionMode"><label><input type="radio" name="nodeInteractionMode" value="choices"><span></span>选项</label><label><input type="radio" name="nodeInteractionMode" value="fill"><span></span>填写</label><label><input type="radio" name="nodeInteractionMode" value="match"><span></span>输入匹配</label></div><div class="input-mode-summary hidden" id="nodeInputSummary"><div><strong id="nodeInputSummaryTitle">玩家填写</strong><small id="nodeInputSummaryText">尚未设置</small></div><button class="chip-btn" id="nodeInputSettingsBtn" type="button">设置</button></div><p class="hint" id="nodeInteractionHint">“选项”读取 <code>[[选项文本-&gt;目标节点]]</code>；仅有一个 <code>[[目标节点]]</code> 时作为无选项过场。“填写”和“输入匹配”会改用输入框。</p></div><div class="field editor-standard-field" id="nodeEventCallField"><details class="event-node-settings" id="nodeEventCallDetails"><summary><span style="margin-left:6px">故事事件</span></summary><div class="event-node-settings-body"><label class="round-check-row" style="margin-top:0!important"><input type="checkbox" id="nodeEventCallEnabled"><span></span>进入此节点时抽取事件</label><div id="nodeEventCallInputs"><div class="field" style="margin-top:12px"><label for="nodeEventCallPool">事件池</label><select id="nodeEventCallPool"></select></div><div class="field"><label for="nodeEventCallFallback">无可用事件时前往</label><select id="nodeEventCallFallback" data-node-picker></select></div><button class="chip-btn" id="nodeEventManagePoolsBtn" type="button">管理故事事件</button><p class="hint">启用后，这个节点只作为隐藏的分流入口：真正进入时会按当前状态筛选事件并直接显示抽中的普通节点，本节点正文和普通去向不会显示。状态变化应写在进入此节点之前的选项，或写在抽中的事件节点里。</p></div></div></details></div><div class="field editor-standard-field" id="nodeEntityBindingField"><details class="event-node-settings" id="nodeEntityBindingDetails"><summary><span style="margin-left:6px">进入时选取实体</span></summary><div class="event-node-settings-body"><label class="round-check-row" style="margin-top:0!important"><input type="checkbox" id="nodeEntityBindingEnabled"><span></span>进入此节点时随机选取一个已有实体</label><div id="nodeEntityBindingInputs"><div class="field" style="margin-top:12px"><label for="nodeEntityBindingTemplate">实体模板</label><select id="nodeEntityBindingTemplate"></select></div><div class="entity-token-grid"><div class="field"><label for="nodeEntityBindingName">剧情角色绑定名</label><input id="nodeEntityBindingName" maxlength="40" placeholder="target"></div><div class="field"><label for="nodeEntityBindingFallback">无候选兜底称呼</label><input id="nodeEntityBindingFallback" maxlength="80" placeholder="某个人"></div></div><div class="logic-section" style="margin-top:8px"><div class="entity-rule-subhead" style="margin-top:0"><strong>候选字段条件</strong><span class="spacer"></span><button class="chip-btn" id="addNodeEntityBindingConditionBtn" type="button">＋ 添加条件</button></div><div class="logic-list" id="nodeEntityBindingConditionList"></div><div class="round-options logic-mode" id="nodeEntityBindingConditionMode"><label><input type="radio" name="nodeEntityBindingConditionMode" value="all" checked><span></span>全部满足</label><label><input type="radio" name="nodeEntityBindingConditionMode" value="any"><span></span>满足任一</label></div></div><small class="entry-effect-group-status" id="nodeEntityBindingStatus"></small><p class="hint">候选只来自该模板已经生成且仍有效的实例；隐藏不会排除。选中后可用 <code>${target.name}</code> 或 <code>${target.字段变量名}</code> 引用，条件和状态变化里也可选择这个剧情角色。离开节点后绑定继续保留，直到再次选取同名角色或重新开始；无候选时会清空旧绑定，兜底称呼只用于 <code>${target.name}</code> 的文字显示。</p></div></div></details></div><div class="field editor-standard-field" id="nodeEntryEffectGroupField"><details class="event-node-settings" id="nodeEntryEffectGroupDetails"><summary><span style="margin-left:6px">进入时执行变化组</span></summary><div class="event-node-settings-body entry-effect-group-body"><div class="field" style="margin-bottom:10px"><label for="nodeEntryEffectGroupSelect">状态变化组</label><select id="nodeEntryEffectGroupSelect"></select><small class="entry-effect-group-status" id="nodeEntryEffectGroupStatus">不执行</small></div><button class="chip-btn" id="nodeEntryEffectGroupManageBtn" type="button">管理状态变化组</button><p class="hint">真正进入节点时执行一次；刷新、重绘和读档恢复不会重复执行。若变化触发状态跳转，会直接前往目标节点，不先闪现当前正文。事件入口节点不使用此设置。</p></div></details></div><div class="field editor-standard-field" id="nodeChapterField"><label for="nodeChapter">所属章节</label><select id="nodeChapter"></select><p class="hint">章节只负责整理节点；选项仍然可以跨章节连接。</p></div><div class="field editor-standard-field" id="nodeTimerField"><div class="countdown-title-row"><span>倒计时 <button class="tiny-help-btn" id="countdownHelpBtn" type="button" aria-label="倒计时说明">?</button></span><button id="nodeCountdownToggle" type="button" aria-expanded="false" aria-controls="nodeCountdownBody" aria-label="展开倒计时设置"><svg class="svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div><div id="nodeCountdownBody" class="hidden"><label class="round-check-row"><input type="checkbox" id="nodeCountdownEnabled"><span></span>启用节点倒计时</label><div id="nodeCountdownInputs"><div class="countdown-grid two"><label>分钟<input id="nodeCountdownMinutes" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" value="0"></label><label>秒<input id="nodeCountdownSeconds" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" value="10"></label></div><div class="countdown-warning-row"><span>剩余</span><input id="nodeCountdownWarning" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" value="3"><span>秒时醒目显示</span></div><div class="field" style="margin-top:11px"><label for="nodeCountdownTarget">时间耗尽时前往</label><select id="nodeCountdownTarget" data-node-picker></select></div><p class="hint">正文与选项完整显示后开始计时；在限时内做出选择会正常跳转，时间耗尽则自动前往指定节点。</p></div><label class="round-check-row"><input type="checkbox" id="nodeFreezeCountdown"><span></span>停留在此节点时冻结故事 / 章节倒计时</label></div></div><div class="field editor-standard-field" id="nodeSaveField"><label>存档</label><label class="round-check-row"><input type="checkbox" id="nodeDisableSave"><span></span>禁用当前节点的存档中心</label><p class="hint">玩家仍可暂停、使用其他菜单功能并返回首页；只是在此节点无法打开存档中心，因此不能在这里保存或读取存档。返回首页后可正常进入存档中心。</p></div><div class="field editor-standard-field" id="nodeHistoryField"><label>故事历程</label><label class="round-check-row"><input type="checkbox" id="nodeDisableHistory"><span></span>当前节点禁止查看故事历程</label><label class="round-check-row"><input type="checkbox" id="nodeArchiveHistory"><span></span>当前节点收录完整故事历程</label><p class="hint">启用收录后，无后续操作的节点会在到达时保存；存在选项或输入时，会在玩家完成本节点操作后保存至“我的档案”。</p></div><div class="field editor-standard-field" id="nodeTagsField"><label for="nodeTags">标签</label><input id="nodeTags" placeholder="可填写，例如：主线 夜晚 城镇" /><p class="hint">用空格分隔多个标签。在可视化画布中点击标签改色。</p></div><div class="field editor-standard-field" id="nodeThemeField"><label>节点主题</label><div class="node-theme-row"><div><label class="round-check-row" style="margin:0"><input type="checkbox" id="nodeThemeEnabled"><span></span>启用节点主题</label><small class="node-theme-status" id="nodeThemeStatus">跟随全局主题</small></div><button class="chip-btn" id="nodeThemeSettingsBtn" type="button">设置</button></div><p class="hint">单独设置当前节点的主题配色。</p></div><div class="field editor-standard-field" id="nodeColorField"><label>节点卡片颜色 <button class="node-card-hex-btn" id="nodeColorValue" type="button" aria-label="自定义节点卡片颜色"></button></label><div class="color-control"><input id="nodeColor" type="color" value="#0056b3" /><div class="color-swatches" id="colorSwatches"></div></div><p class="hint node-card-color-hint" id="nodeCardColorHint"></p></div><div class="field editor-standard-field" id="nodeAuthorNoteField"><label for="nodeAuthorNote">作者备注</label><textarea id="nodeAuthorNote" rows="5" maxlength="6000" placeholder="可写提示、待修改内容或创作备忘" aria-describedby="nodeAuthorNoteHint"></textarea><p class="hint" id="nodeAuthorNoteHint">仅保存在编辑器与故事 JSON 中，故事预览可见；不会计入正文统计，也不会进入正式导出的故事。</p></div></div><div class="modal-actions editor-footer"><button class="text-btn" id="setStartBtn" data-editor-mutates="true" data-editor-commit="true">设为故事开场</button><button class="text-btn" id="copyNodeBtn">复制节点</button><button class="danger-btn" id="deleteNodeBtn" data-editor-mutates="true" data-editor-commit="true">删除节点</button></div></section></div>
 
   <div class="modal-layer high hidden" id="nodeDetailLayer"><section class="modal small node-detail-modal" role="dialog" aria-modal="true" aria-label="节点详情"><div class="modal-head"><h2>节点详情</h2><span class="spacer"></span><button class="icon-btn" id="closeNodeDetailBtn" aria-label="关闭节点详情"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div class="modal-scroll"><div class="node-detail-list" id="nodeDetailContent"></div></div><div class="modal-actions"><button class="text-btn" id="cancelNodeDetailBtn" data-editor-action="cancel">取消</button><button class="primary-btn" id="goEditNodeBtn">前往编辑</button></div></section></div>
 
@@ -794,7 +817,7 @@ input.placeholder-scroll-covered::placeholder{color:transparent!important;opacit
 
 <script>
 // Release baseline: preserve v1 data and introduce explicit migrations before changing a persisted schema.
-const VF_RELEASE=Object.freeze({appVersion:'1.0.1',storyVersion:1,materialVersion:1,editorSchema:1,statusPanelSchema:1,backupVersion:1,themeVersion:1,dbVersion:1,storageNamespace:'v1'});
+const VF_RELEASE=Object.freeze({appVersion:'1.0.2',storyVersion:1,materialVersion:1,editorSchema:1,statusPanelSchema:1,backupVersion:1,themeVersion:1,dbVersion:1,storageNamespace:'v1'});
 const VF_STORAGE=Object.freeze({database:'vfstory_editor_'+VF_RELEASE.storageNamespace,language:'vfstory_editor_language_'+VF_RELEASE.storageNamespace});
 
 (async () => {
@@ -6991,6 +7014,9 @@ localizeStaticShell();
   let previewFullscreen = false;
   function syncNodeColorSwatches(color) {
     els.nodeColorValue.textContent=String(color).toUpperCase();
+    els.nodeColorValue.classList.toggle('is-custom',!NODE_COLORS.some(value=>value.toLowerCase()===String(color).toLowerCase()));
+    els.nodeColorValue.setAttribute('aria-label',nodeCardColorText('custom'));
+    $('#nodeCardColorHint').textContent=nodeCardColorText('hint');
     $$('.color-swatch',els.colorSwatches).forEach(b=>{const active=b.dataset.color.toLowerCase()===String(color).toLowerCase();b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
   }
   function syncPreviewDebugGroups() {
@@ -7775,7 +7801,9 @@ localizeStaticShell();
         },
         storyOrder: [p.id],
         customThemes: [],
-        modalCloseHintDismissed: false
+        modalCloseHintDismissed: false,
+        storyDrawerDiscovered: false,
+        nodeCountdownExpanded: false
       },
       currentProjectId: p.id,
       projects: [p]
@@ -10427,6 +10455,8 @@ localizeStaticShell();
     out.preferences.showGraphTags = out.preferences.showGraphTags !== false;
     out.preferences.showNodeListTags = out.preferences.showNodeListTags !== false;
     out.preferences.modalCloseHintDismissed = out.preferences.modalCloseHintDismissed === true;
+    out.preferences.storyDrawerDiscovered = out.preferences.storyDrawerDiscovered === true;
+    out.preferences.nodeCountdownExpanded = out.preferences.nodeCountdownExpanded === true;
     out.preferences.graphToolPosition = out.preferences.graphToolPosition && typeof out.preferences.graphToolPosition === 'object' ? out.preferences.graphToolPosition : {};
     out.preferences.graphToolPage = [0, 1, 2].includes(Number(out.preferences.graphToolPage)) ? Number(out.preferences.graphToolPage) : 0;
     out.preferences.graphViewportByProject = normalizeGraphViewportPreferences(out.preferences.graphViewportByProject);
@@ -16513,7 +16543,8 @@ localizeStaticShell();
         return;
       }
       if (action === 'card-color') {
-        const v = await promptDialog(_tr(546), _tr(547), x.color || '#2563eb', _tr(548));
+        const v = await openNodeCardColorPicker(_tr(546), x.color || NODE_COLORS[0], {confirmText:_tr(548)});
+        if(currentProject()!==p||!p.nodes.includes(x))return;
         if (v === null) return;
         if (!/^#[0-9a-f]{6}$/i.test(v.trim())) {
           toast(_tr(549));
@@ -16588,7 +16619,9 @@ localizeStaticShell();
       return;
     }
     if (action === 'card-color') {
-      const v = await promptDialog(_tr(560), _tr(547), '', _tr(548));
+      const shared=nodes.every(n=>n.color.toLowerCase()===nodes[0].color.toLowerCase())?nodes[0].color:'';
+      const v = await openNodeCardColorPicker(_tr(560), shared, {confirmText:_tr(548)});
+      if(currentProject()!==p||nodes.some(n=>!p.nodes.includes(n)))return;
       if (v === null) return;
       if (!/^#[0-9a-f]{6}$/i.test(v.trim())) {
         toast(_tr(549));
@@ -16930,6 +16963,7 @@ localizeStaticShell();
     node.onpointercancel = end;
   }
   function renderEditor() {
+    syncNodeCountdownDisclosure();
     const x = selectedNode();
     if (!x) return;
     const home = x.systemType === 'home';
@@ -18048,7 +18082,7 @@ localizeStaticShell();
     body = '',
     x,
     y,
-    color = '#2563eb',
+    color = randomNodeCardColor(),
     open = true
   } = {}) {
     if (coverageWriteBlocked()) return null;
@@ -18321,7 +18355,7 @@ localizeStaticShell();
         tags: [],
         tagColor: '#ffffff',
         tagColors: {},
-        color: '#7c3aed',
+        color: randomNodeCardColor(),
         titleVisible: p.defaultTitleVisible !== false,
         systemType: '',
         chapterId: p.currentChapterId || p.chapters[0]?.id || '',
@@ -18378,8 +18412,67 @@ localizeStaticShell();
   function insertVariableToken() {
     openVariableTokenPicker();
   }
+  function randomNodeCardColor(){return NODE_COLORS[Math.floor(Math.random()*NODE_COLORS.length)];}
+  function nodeCardColorText(key){
+    const text={hex:['十六进制颜色','Hexadecimal color'],invalid:['请输入 #RRGGBB 格式的十六进制颜色。','Enter a hexadecimal color in #RRGGBB format.'],hint:['点右上角色彩编码可自定义十六进制颜色。','Click the color code at the top right to enter a custom hexadecimal color.'],custom:['自定义节点卡片颜色','Custom node card color']};
+    return text[key][VF_LANG==='en'?1:0];
+  }
+  function normalizeNodeCardHex(value){const raw=String(value||'').trim();return /^#[0-9a-f]{6}$/i.test(raw)?raw.toLowerCase():null;}
+  function openNodeCardColorPicker(title,value,{presets=true,confirmText=uiText('save')}={}){
+    return new Promise(resolve=>{
+      const initial=normalizeNodeCardHex(value),inputId='node-card-hex-'+uid(),errorId=inputId+'-error';
+      const body=(presets?'<div class="theme-color-picker-grid" data-card-palette></div>':'')+
+        '<div class="field" style="margin:0"><label for="'+inputId+'">'+escapeHtml(nodeCardColorText('hex'))+'</label><div class="theme-hex-row"><div class="theme-hex-preview" data-card-preview aria-hidden="true"></div><input id="'+inputId+'" data-card-hex maxlength="7" placeholder="#RRGGBB" autocapitalize="characters" autocomplete="off" spellcheck="false" aria-describedby="'+errorId+'"></div><p id="'+errorId+'" class="hint node-card-color-error hidden" data-card-error role="alert">'+escapeHtml(nodeCardColorText('invalid'))+'</p></div>';
+      const footer='<button type="button" class="text-btn" data-cancel data-card-color-cancel>'+escapeHtml(uiText('cancel'))+'</button><button type="button" class="primary-btn" data-card-color-save>'+escapeHtml(confirmText)+'</button>';
+      const layer=makeEditorDynamicLayer(title,body,footer,'node-card-color-dialog');layer.dataset.ownDraftGuard='true';
+      const input=$('[data-card-hex]',layer),preview=$('[data-card-preview]',layer),error=$('[data-card-error]',layer),host=$('[data-card-palette]',layer);
+      input.value=initial?initial.toUpperCase():'';
+      let lastValid=initial||NODE_COLORS[0],finished=false,closing=false;
+      const sync=()=>{
+        const parsed=normalizeNodeCardHex(input.value);if(parsed)lastValid=parsed;
+        preview.style.setProperty('--preview',lastValid);
+        if(host)$$('.theme-picker-swatch',host).forEach(button=>{
+          const active=button.dataset.cardPreset===parsed;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));
+        });
+        if(parsed){input.removeAttribute('aria-invalid');error.classList.add('hidden');}
+      };
+      if(host)NODE_COLORS.forEach(color=>{
+        const button=document.createElement('button');button.type='button';button.className='theme-picker-swatch';button.dataset.cardPreset=color.toLowerCase();
+        button.style.setProperty('--swatch',color);button.setAttribute('aria-label',color.toUpperCase());button.title=color.toUpperCase();
+        button.onclick=()=>{input.value=color.toUpperCase();sync();};host.appendChild(button);
+      });
+      input.oninput=sync;sync();
+      const finish=result=>{if(finished)return;finished=true;layer.remove();resolve(result);};
+      const dismiss=async explicit=>{
+        if(finished||closing)return;
+        const current=normalizeNodeCardHex(input.value),dirty=current?current!==initial:input.value.trim().toLowerCase()!==(initial||'');
+        if(!explicit&&dirty){
+          closing=true;let discard=false;
+          try{discard=await confirmDialog(uiText('discardQuestion'),_tr(2830),uiText('discard'),true);}finally{closing=false;}
+          if(!discard||!layer.isConnected)return;
+        }
+        finish(null);
+      };
+      $$('[data-cancel]',layer).forEach(button=>{button.onclick=()=>dismiss(button.hasAttribute('data-card-color-cancel'));});
+      $('[data-card-color-save]',layer).onclick=()=>{
+        if(finished||closing)return;
+        const parsed=normalizeNodeCardHex(input.value);
+        if(!parsed){input.setAttribute('aria-invalid','true');error.classList.remove('hidden');return;}
+        finish(parsed);
+      };
+    });
+  }
+  async function editSelectedNodeCardHex(){
+    if(coverageWriteBlocked())return;
+    const project=currentProject(),node=selectedNode();if(!node||node.systemType==='home')return;
+    const color=await openNodeCardColorPicker(_tr(546),node.color,{presets:false});
+    if(color===null||currentProject()!==project||selectedNode()!==node||!project.nodes.includes(node))return;
+    setSelectedColor(color);
+  }
+
   function renderColorSwatches() {
     els.colorSwatches.innerHTML = '';
+    $('#nodeCardColorHint').textContent=nodeCardColorText('hint');
     NODE_COLORS.forEach(c => {
       const b = document.createElement('button');
       b.type='button';
@@ -24490,6 +24583,7 @@ localizeStaticShell();
     $('#memoryStatusLabel').value = m?.statusLabel || '';
     $('#memoryVisible').value = m?.visible ? 'visible' : 'hidden';
     renderMemoryNoticeButtons();
+    setEditorCreationFocus($('#memoryEditorLayer'),!m);
     $('#memoryEditorLayer').classList.remove('hidden');raiseEditorLayer($('#memoryEditorLayer'));
     focusModalFieldSafely('#memoryNameField');
   }
@@ -24867,6 +24961,7 @@ localizeStaticShell();
       createdAt: nowIso()
     };
     renderAchievementEditor();
+    setEditorCreationFocus($('#achievementEditorLayer'),!src);
     $('#achievementEditorLayer').classList.remove('hidden');raiseEditorLayer($('#achievementEditorLayer'));
     focusModalFieldSafely('#achievementName');
   }
@@ -25286,6 +25381,7 @@ localizeStaticShell();
       effects: []
     }, (p.stateResponses || []).length);
     renderStateResponseEditor();
+    setEditorCreationFocus($('#stateResponseEditorLayer'),!live);
     $('#stateResponseEditorLayer').classList.remove('hidden');raiseEditorLayer($('#stateResponseEditorLayer'));
   }
   function closeStateResponseEditor() {
@@ -25410,6 +25506,7 @@ localizeStaticShell();
     entityActionDraft = live ? JSON.parse(JSON.stringify(live)) : newEntityActionDraft();
     entityActionOperationSortMode = false;
     renderEntityActionEditor();
+    setEditorCreationFocus($('#entityActionEditorLayer'),!live);
     $('#entityActionEditorLayer').classList.remove('hidden');raiseEditorLayer($('#entityActionEditorLayer'));
   }
   function closeEntityActionEditor() {
@@ -25762,6 +25859,7 @@ localizeStaticShell();
       effects: []
     }, (p.effectGroups || []).length);
     renderEffectGroupEditor();
+    setEditorCreationFocus($('#effectGroupEditorLayer'),!existing);
     $('#effectGroupEditorLayer').classList.remove('hidden');raiseEditorLayer($('#effectGroupEditorLayer'));
   }
   function closeEffectGroupEditor() {
@@ -25909,6 +26007,7 @@ localizeStaticShell();
       createdAt: nowIso()
     };
     renderEventPoolEditor();
+    setEditorCreationFocus($('#eventPoolEditorLayer'),!src);
     $('#eventPoolEditorLayer').classList.remove('hidden');raiseEditorLayer($('#eventPoolEditorLayer'));
   }
   function closeEventPoolEditor() {
@@ -26207,6 +26306,7 @@ localizeStaticShell();
     entityDraft = existing ? JSON.parse(JSON.stringify(existing)) : defaultEntityDraft();
     $('#entityEditorTitle').textContent = existing ? _tr(1458) : _tr(1459);
     renderEntityEditor();
+    setEditorCreationFocus($('#entityEditorLayer'),!existing);
     $('#entityEditorLayer').classList.remove('hidden');raiseEditorLayer($('#entityEditorLayer'));
     focusModalFieldSafely('#entityName');
   }
@@ -26715,6 +26815,7 @@ localizeStaticShell();
     entityTemplateDraft = existing ? JSON.parse(JSON.stringify(existing)) : defaultEntityTemplateDraft();
     $('#entityTemplateEditorTitle').textContent = existing ? _tr(1514) : _tr(1515);
     renderEntityTemplateEditor();
+    setEditorCreationFocus($('#entityTemplateEditorLayer'),!existing);
     $('#entityTemplateEditorLayer').classList.remove('hidden');raiseEditorLayer($('#entityTemplateEditorLayer'));
     focusModalFieldSafely('#entityTemplateName');
   }
@@ -27963,6 +28064,7 @@ localizeStaticShell();
     nodeLocalVariableDraft = existing ? JSON.parse(JSON.stringify(existing)) : defaultNodeLocalVariableDraft();
     $('#nodeLocalVariableEditorTitle').textContent = existing ? _tr(1648) : _tr(1649);
     renderNodeLocalVariableEditor();
+    setEditorCreationFocus($('#nodeLocalVariableEditorLayer'),!existing);
     els.nodeLocalVariableEditorLayer.classList.remove('hidden');raiseEditorLayer(els.nodeLocalVariableEditorLayer);
   }
   function closeNodeLocalVariableEditor() {
@@ -28222,6 +28324,7 @@ localizeStaticShell();
     }
     $('#variableEditorTitle').textContent = existing ? _tr(1685) : _tr(1686);
     renderVariableEditor();
+    setEditorCreationFocus($('#variableEditorLayer'),!existing);
     els.variableEditorLayer.classList.remove('hidden');raiseEditorLayer(els.variableEditorLayer);
     focusModalFieldSafely('#variableName');
   }
@@ -30380,6 +30483,132 @@ localizeStaticShell();
     if (input) input.value = '';
     renderGlobalSearchResults();
   }
+  // Discovering the drawer is an editor preference, independent of stories and graph undo.
+  let storyCreationGuide=null,storyDrawerDiscoveryTimer=0;
+  const STORY_GUIDE_EVENTS=['pointerdown','pointerup','pointermove','touchstart','touchmove','touchend','wheel','click','dblclick','contextmenu','keydown','focusin'];
+  function storyGuideText(key){
+    const text={menu:['点菜单键展开侧栏','Tap the menu button to open the sidebar'],create:['点这个按钮创建新故事','Tap this button to create a new story']};
+    const value=text[key][VF_LANG==='en'?1:0];
+    return VF_LANG==='en'&&canvasGuideDevice()==='desktop'?value.replace(/^Tap /,'Click '):value;
+  }
+  function storyGuideTarget(){return $(storyCreationGuide?.step==='create'?'#newStoryBtn':'#storiesBtn');}
+  function positionStoryCreationGuide(){
+    if(!storyCreationGuide)return;
+    const target=storyGuideTarget(),r=target?.getBoundingClientRect();
+    if(!r||!r.width||!r.height)return;
+    const guide=storyCreationGuide,root=guide.layer,w=innerWidth,h=innerHeight,pad=3;
+    const left=Math.max(0,r.left-pad),top=Math.max(0,r.top-pad),right=Math.min(w,r.right+pad),bottom=Math.min(h,r.bottom+pad);
+    const boxes=[[0,0,w,top],[0,bottom,w,Math.max(0,h-bottom)],[0,top,left,bottom-top],[right,top,Math.max(0,w-right),bottom-top]];
+    root.querySelectorAll('.story-guide-mask').forEach((mask,i)=>{const [x,y,width,height]=boxes[i];Object.assign(mask.style,{left:x+'px',top:y+'px',width:width+'px',height:height+'px'});});
+    const ring=root.querySelector('.story-guide-ring');
+    Object.assign(ring.style,{left:left+'px',top:top+'px',width:(right-left)+'px',height:(bottom-top)+'px'});
+    ring.classList.toggle('story-guide-unframed',guide.step==='create');
+    const copy=root.querySelector('.story-guide-copy');copy.textContent=storyGuideText(guide.step);
+    Object.assign(copy.style,{width:'max-content',maxWidth:'calc(100vw - 24px)',left:'12px',top:Math.min(h-100,bottom+38)+'px'});
+    const measured=copy.getBoundingClientRect();copy.style.left=Math.max(12,Math.min(left,w-measured.width-12))+'px';
+    const cr=copy.getBoundingClientRect(),line=root.querySelector('line');
+    const lineX=Math.max(Math.max(left+6,cr.left+8),Math.min((left+right)/2,Math.min(right-6,cr.right-8)));
+    line.setAttribute('x1',String(lineX));line.setAttribute('y1',String(bottom));
+    line.setAttribute('x2',String(lineX));line.setAttribute('y2',String(cr.top));
+  }
+  function stopStoryCreationGuide(){
+    const guide=storyCreationGuide;if(!guide)return;
+    clearTimeout(guide.timer);guide.layer.remove();storyCreationGuide=null;
+    STORY_GUIDE_EVENTS.forEach(name=>window.removeEventListener(name,guardStoryCreationGuide,true));
+    window.removeEventListener('resize',positionStoryCreationGuide);
+    window.visualViewport?.removeEventListener('resize',positionStoryCreationGuide);
+    window.visualViewport?.removeEventListener('scroll',positionStoryCreationGuide);
+  }
+  function guardStoryCreationGuide(event){
+    if(!storyCreationGuide)return;
+    const target=storyGuideTarget(),inside=target&&(event.target===target||target.contains(event.target));
+    if(event.type==='focusin'){
+      if(!inside){event.stopImmediatePropagation();target?.focus({preventScroll:true});}return;
+    }
+    const activation=inside&&!['pointermove','touchmove','wheel','dblclick','contextmenu'].includes(event.type)&&
+      (event.type!=='keydown'||event.key==='Enter'||event.key===' ');
+    if(!activation){event.preventDefault();event.stopImmediatePropagation();return;}
+    if(event.type==='click'&&storyCreationGuide.step==='create')stopStoryCreationGuide();
+  }
+  function maybeStartStoryCreationGuide(){
+    if(storyCreationGuide||!storageReady||state.preferences.storyDrawerDiscovered||coverageViewMode||canvasGuideAdvanceTimer||document.hidden)return;
+    if(canvasPanState||canvasPinchState||canvasTouchPointers.size||graphPointerActive)return;
+    const progress=canvasGuideProgress();
+    if(!progress.pan||!progress.zoom||!els.canvasGuide.classList.contains('hidden')||visibleEditorModalLayers().length||!els.storyDrawerLayer.classList.contains('hidden'))return;
+    const button=$('#storiesBtn'),r=button?.getBoundingClientRect();if(!r?.width||!r.height)return;
+    const layer=document.createElement('div');layer.id='storyCreationGuide';layer.setAttribute('role','dialog');layer.setAttribute('aria-modal','true');layer.setAttribute('aria-label',storyGuideText('menu'));
+    layer.innerHTML='<div class="story-guide-mask"></div><div class="story-guide-mask"></div><div class="story-guide-mask"></div><div class="story-guide-mask"></div><div class="story-guide-ring"></div><svg class="story-guide-line" aria-hidden="true"><line/></svg><p class="story-guide-copy" role="status" aria-live="polite"></p>';
+    storyCreationGuide={layer,step:'menu',timer:0};document.body.appendChild(layer);
+    STORY_GUIDE_EVENTS.forEach(name=>window.addEventListener(name,guardStoryCreationGuide,{capture:true,passive:false}));
+    window.addEventListener('resize',positionStoryCreationGuide);
+    window.visualViewport?.addEventListener('resize',positionStoryCreationGuide);
+    window.visualViewport?.addEventListener('scroll',positionStoryCreationGuide);
+    document.activeElement?.blur?.();positionStoryCreationGuide();button.focus({preventScroll:true});
+  }
+  function noteStoryDrawerOpened(){
+    if(els.storyDrawerLayer.classList.contains('hidden')||!els.storyDrawerLayer.classList.contains('open'))return;
+    if(!state.preferences.storyDrawerDiscovered){state.preferences.storyDrawerDiscovered=true;savePreferencesOnly();}
+    if(storyCreationGuide?.step==='menu'){
+      // The discovery path always uses the story list, where New story is visible.
+      drawerPage='stories';renderDrawerPage();storyCreationGuide.step='create';
+      storyCreationGuide.layer.setAttribute('aria-label',storyGuideText('create'));positionStoryCreationGuide();
+      $('#newStoryBtn').focus({preventScroll:true});storyCreationGuide.timer=setTimeout(stopStoryCreationGuide,5000);
+    }
+  }
+  function installStoryCreationGuide(){
+    const watch=()=>{
+      clearTimeout(storyDrawerDiscoveryTimer);
+      if(els.storyDrawerLayer.classList.contains('open')&&!els.storyDrawerLayer.classList.contains('hidden'))storyDrawerDiscoveryTimer=setTimeout(noteStoryDrawerOpened,280);
+    };
+    new MutationObserver(watch).observe(els.storyDrawerLayer,{attributes:true,attributeFilter:['class']});
+    watch();window.addEventListener('resize',maybeStartStoryCreationGuide);
+    const afterPointer=()=>{if(!state.preferences.storyDrawerDiscovered)setTimeout(maybeStartStoryCreationGuide,0);};
+    window.addEventListener('pointerup',afterPointer,true);window.addEventListener('pointercancel',afterPointer,true);
+    document.addEventListener('visibilitychange',()=>{if(!document.hidden)maybeStartStoryCreationGuide();});
+  }
+
+  function syncNodeCountdownDisclosure(){
+    const expanded=state.preferences.nodeCountdownExpanded===true,button=$('#nodeCountdownToggle'),body=$('#nodeCountdownBody');
+    if(!button||!body)return;
+    button.setAttribute('aria-expanded',String(expanded));
+    button.setAttribute('aria-label',VF_LANG==='en'?(expanded?'Collapse countdown settings':'Expand countdown settings'):(expanded?'收起倒计时设置':'展开倒计时设置'));
+    body.classList.toggle('hidden',!expanded);
+  }
+  function toggleNodeCountdownDisclosure(){
+    state.preferences.nodeCountdownExpanded=state.preferences.nodeCountdownExpanded!==true;
+    syncNodeCountdownDisclosure();savePreferencesOnly();
+  }
+  function setEditorCreationFocus(layer,isNew){if(layer)layer.dataset.editorFocusMode=isNew?'create':'view';}
+  function focusModalContainer(layer){
+    const dialog=layer.querySelector('[role="dialog"]')||layer;
+    if(!dialog.hasAttribute('tabindex'))dialog.setAttribute('tabindex','-1');
+    dialog.focus({preventScroll:true});
+  }
+
+  function supplementCreativeGuide(layer){
+    const en=VF_LANG==='en',sections=$$('.creative-guide-section',layer),first=$('.creative-guide-body',sections[0]),recipes=$('.creative-guide-body',sections.at(-1));
+    const paragraph=(title,text)=>'<p><strong>'+escapeHtml(title)+'</strong><br>'+text.split('\n').map(escapeHtml).join('<br>')+'</p>';
+    const blank=en?['Start a blank story instead of rewriting the example','Open the top-left menu, then choose + New story in the sidebar. Name the story and choose Create story. VF Story creates a separate story with a Home card and an opening node; the example stays in your story list. Switch between stories in the same sidebar.']:['创建空白故事，不必逐个改写示例','点击左上角菜单键，在侧栏选择“＋ 新建故事”，填写名称后点击“创建故事”。VF Story 会另建一个带首页卡片和开场节点的故事，示例故事仍保留在故事列表中；也在这个侧栏切换故事。'];
+    first.insertAdjacentHTML('afterbegin',paragraph(...blank));
+    const additions=en?[
+      ['Show a different complete passage when the player has a key','Goal → The same node describes a locked door before the key is found and an unlocked door afterwards.\nCreate first → A story memory for finding the key.\nWhere → Edit node → Alternate text → Manage. Add a passage and require that memory.\nHow → Write the default passage in the original body. Alternate passages are checked from top to bottom; only the first matching one replaces it. If none matches, the original body is used. Put more specific conditions above broad or unconditional passages.\nWatch out → Alternate text changes the displayed passage, not the original node’s choices or destinations. Visible choices can still append text after the selected passage. To add a short extra paragraph, use appended text; to replace the complete passage, use alternate text.'],
+      ['Let the player type a name or answer a password','Goal → Use an input field instead of choice buttons.\nCreate first → For a saved name, create a mutable text variable.\nWhere → Edit node → Player interaction → Input or Input match → Settings. Input saves the player’s value; Input match checks the configured answers and routes to the matching destination.\nWatch out → Configure valid destinations and an unmatched fallback as needed, then test empty, correct and incorrect input in both preview and exported HTML.'],
+      ['Limit one choice without timing the whole story','Goal → Give a player ten seconds to choose on one page.\nWhere → Expand Countdown in Edit node, enable the node countdown, set the duration, warning and timeout destination. It starts after the body and choices finish appearing.\nWatch out → A node countdown is separate from story and chapter countdowns. Freeze story/chapter countdowns pauses those broader timers while the player stays here; collapsing this settings section only changes the editor layout.'],
+      ['Back up the editor and test what readers will receive','Goal → Keep editable data and check the final story.\nWhere → The sidebar’s editor settings provide editor backups for stories, materials and preferences. A story JSON contains one editable story; exported story HTML is for playing. Editor backups do not include saved local versions.\nHow → Check alternate and appended passages, input outcomes, timeouts and fallback routes in preview, then play through the exported HTML.\nWatch out → Browser and Android app storage are separate. Transfer files explicitly and keep backups before clearing data or moving to another device.']
+    ]:[
+      ['拿到钥匙后，同一节点显示另一版完整正文','需求 → 没拿到钥匙时写门被锁住，拿到后在同一节点显示开门后的描述。\n先创建什么 → 建一个“拿到钥匙”的故事记忆。\n在哪里设置 → 编辑节点 → 替换正文 → 管理，新增正文并设置该记忆为条件。\n节点中怎么写 → 原正文写默认描述。替换正文从上到下检查，只用第一个满足条件的版本；没有匹配项就显示原正文。更具体的条件排在前面，宽泛或无条件的版本排在后面。\n常见误区 → 替换正文只换玩家看到的正文，不改原节点选项和去向；可见选项的附加正文仍会接在选中的正文之后。只想补一小段用附加正文，要换完整描述才用替换正文。'],
+      ['让玩家填写名字，或者输入口令后前往不同节点','需求 → 使用输入框代替选项按钮。\n先创建什么 → 要保存姓名时，先建一个运行中允许修改的文本变量。\n在哪里设置 → 编辑节点 → 玩家交互 → 填写 / 输入匹配 → 设置。“填写”保存玩家输入；“输入匹配”按配置的答案判断去向。\n常见误区 → 配好有效去向，并按需设置未匹配时的兜底；在预览和导出 HTML 中分别试空输入、正确答案与错误答案。'],
+      ['只让当前选择限时，不给整个故事计时','需求 → 玩家在某一页有十秒作出选择。\n在哪里设置 → 展开编辑节点的“倒计时”，启用节点倒计时，填写时长、醒目阈值和超时去向；正文与选项完整显示后开始计时。\n常见误区 → 节点倒计时与故事 / 章节倒计时相互独立。“停留在此节点时冻结”暂停的是故事 / 章节计时；折叠这块设置只改变编辑器显示，不会关闭已经启用的计时。'],
+      ['备份编辑内容，并检查读者实际拿到的故事','需求 → 保留可编辑数据，同时验证最终作品。\n在哪里设置 → 侧栏的编辑器设置提供编辑器备份，用于故事、素材和偏好设置；故事 JSON 用于继续编辑单个故事，故事 HTML 用于游玩。编辑器备份不包含本地保存版本。\n怎么检查 → 预览中分别测试替换正文、附加正文、输入结果、超时和兜底路线，再打开导出的 HTML 实际游玩。\n常见误区 → 浏览器和 Android 应用的本地数据相互独立，换设备或清理数据前应先导出文件备份。']
+    ];
+    const appended=$$('p',recipes).find(p=>p.querySelector('strong')?.textContent.includes(en?'visible choices':'可见选项'));
+    if(appended)appended.insertAdjacentHTML('beforebegin',paragraph(...additions.shift()));
+    recipes.insertAdjacentHTML('beforeend',additions.map(item=>paragraph(...item)).join(''));
+    for(const li of $$('li',layer)){
+      if(li.textContent.includes(en?'Global search':'全局搜索'))li.innerHTML=li.innerHTML.replace(en?'appended text':'附加正文',en?'alternate text, appended text':'替换正文、附加正文');
+    }
+  }
+
   function canvasGuideDevice() {
     return matchMedia('(hover:hover) and (pointer:fine)').matches ? 'desktop' : 'mobile';
   }
@@ -30409,7 +30638,7 @@ localizeStaticShell();
     } else if (!progress.zoom) {
       els.canvasGuide.textContent = desktop ? _tr(1982) : _tr(1983);
       els.canvasGuide.classList.remove('hidden');raiseEditorLayer(els.canvasGuide);
-    } else els.canvasGuide.classList.add('hidden');
+    } else {els.canvasGuide.classList.add('hidden');maybeStartStoryCreationGuide();}
   }
   function markCanvasGuideStep(step) {
     const key = canvasGuideKey(),
@@ -30419,7 +30648,7 @@ localizeStaticShell();
     state.preferences[key] = progress;
     savePreferencesOnly();
     clearTimeout(canvasGuideAdvanceTimer);
-    canvasGuideAdvanceTimer = setTimeout(showCanvasGuideIfNeeded, 2000);
+    canvasGuideAdvanceTimer = setTimeout(()=>{canvasGuideAdvanceTimer=0;showCanvasGuideIfNeeded();}, 2000);
   }
   function openVersionManager() {
     versionCompareMode = false;
@@ -31261,7 +31490,7 @@ localizeStaticShell();
         x: 640,
         y: 290,
         tags: [],
-        color: '#16a34a',
+        color: randomNodeCardColor(),
         titleVisible: true,
         systemType: '',
         chapterId,
@@ -31290,6 +31519,7 @@ localizeStaticShell();
   }
   function newStory() {
     if (coverageWriteBlocked()) return;
+    setEditorCreationFocus($('#newStoryLayer'),true);
     $('#newStoryName').value = defaultNewStoryTitle();
     updateRestoreExampleStoryButton();
     $('#newStoryLayer').classList.remove('hidden');raiseEditorLayer($('#newStoryLayer'));
@@ -31303,6 +31533,7 @@ localizeStaticShell();
     layer.className = 'modal-layer high dynamic-dialog creative-guide-dialog';
     layer.innerHTML = _tr(2051,[]);
     const item=document.createElement('li');item.innerHTML='<strong>'+escapeHtml(altText('label'))+'</strong> · '+escapeHtml(altText('guide'));const list=$('.creative-guide-section .creative-guide-body>ul',layer);if(list)list.insertBefore(item,list.children[5]||null);
+    supplementCreativeGuide(layer);
     document.body.appendChild(layer);raiseEditorLayer(layer);
     $$('[data-cancel]', layer).forEach(b => b.onclick = () => layer.remove());
   }
@@ -33275,7 +33506,7 @@ localizeStaticShell();
         tags: [],
         tagColor: '#ffffff',
         tagColors: {},
-        color: '#7c3aed',
+        color: randomNodeCardColor(),
         titleVisible: p.defaultTitleVisible !== false,
         systemType: '',
         chapterId: p.currentChapterId || p.chapters[0]?.id || '',
@@ -37467,9 +37698,12 @@ localizeStaticShell();
   }
   function focusInsideModal(layer){
     if(!layer)return;
-    const items=modalFocusable(layer),preferred=items.find(el=>el.hasAttribute('data-initial-focus'))||items.find(el=>el.matches('input:not([type=hidden]),textarea,select'))||items[0];
-    if(preferred)preferred.focus({preventScroll:true});
-    else {const dialog=layer.querySelector('[role="dialog"]')||layer;if(!dialog.hasAttribute('tabindex'))dialog.setAttribute('tabindex','-1');dialog.focus({preventScroll:true});}
+    if(storyCreationGuide){storyGuideTarget()?.focus({preventScroll:true});return;}
+    const items=modalFocusable(layer),textField=items.find(el=>el.matches('input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="range"]):not([type="file"]),textarea'));
+    const searchOnly=layer.id==='globalSearchLayer',emptyCreation=layer.dataset.editorFocusMode==='create'&&textField&&!textField.value.trim();
+    if(searchOnly&&textField)textField.focus({preventScroll:true});
+    else if(emptyCreation)textField.focus({preventScroll:true});
+    else focusModalContainer(layer);
   }
   function syncModalFocus(layers){
     layers=[...layers,...(!els.storyDrawerLayer.classList.contains('hidden')?[els.storyDrawerLayer]:[])];
@@ -37541,6 +37775,7 @@ localizeStaticShell();
     pruneEditorActionUndo();
     syncEditorDisclosureIcons();syncInputPlaceholderScrollers();
     const layers = visibleEditorModalLayers();
+    if(storyCreationGuide&&layers.length)stopStoryCreationGuide();
     for(const layer of editorLayerOrder.keys())if(!layers.includes(layer))editorLayerOrder.delete(layer);
     layers.forEach(layer=>{if(!editorLayerOrder.has(layer))raiseEditorLayer(layer)});
     let top = null,
@@ -37566,6 +37801,7 @@ localizeStaticShell();
     syncKeyboardShift();
     syncModalCloseHint();
     if (storageSyncDeferred && !layers.length) scheduleExternalStorageSync();
+    maybeStartStoryCreationGuide();
   }
   const modalStackObservation = {subtree:true,childList:true,attributes:true,attributeFilter:['class']};
   const modalStackObserver = new MutationObserver(() => {
@@ -37777,6 +38013,7 @@ localizeStaticShell();
     });
   }
   function bindNodeEditorEvents() {
+    $('#nodeCountdownToggle').onclick=toggleNodeCountdownDisclosure;
     $('#closeEditorBtn').onclick = requestCloseEditor;
     els.nodeTitle.onchange = async () => {
       const x = selectedNode();
@@ -37941,6 +38178,7 @@ localizeStaticShell();
       renderAll();
     };
     els.nodeColor.onchange = () => setSelectedColor(els.nodeColor.value);
+    els.nodeColorValue.onclick=editSelectedNodeCardHex;
     $('#insertLinkBtn').onclick = openLink;
     $('#linkEntityTokenBtn').onclick = () => openEntityTokenPicker('link-label');
     $('#syncLinksBtn').onclick = syncMissingLinks;
@@ -38814,7 +39052,7 @@ saveMemoryEditor=editorActionTransaction(saveMemoryEditor,'save');
     clearManualVersions=editorActionTransaction(clearManualVersions,'delete','versions');
     deleteTestScenarioRecord=editorRecordTransaction(deleteTestScenarioRecord,'scenario',id=>id);
     deleteTestRecord=editorRecordTransaction(deleteTestRecord,'record',id=>id);
-    bindEvents();installViewportRendering();
+    bindEvents();installViewportRendering();installStoryCreationGuide();
     const noteInput = $('#nodeAuthorNote');
     if (noteInput) noteInput.addEventListener('input', () => {
       const x = selectedNode();
@@ -39013,6 +39251,9 @@ saveMemoryEditor=editorActionTransaction(saveMemoryEditor,'save');
       renderColorSwatches();
       if(!storageViewBusy())renderAll();
       renderDrawerPage();
+      showCanvasGuideIfNeeded();
+      if(storyCreationGuide)positionStoryCreationGuide();
+      syncNodeCountdownDisclosure();
     }
   }
   function editorLanguage(){return state.preferences.language==='en'?'en':'zh-CN'}
