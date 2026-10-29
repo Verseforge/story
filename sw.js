@@ -1,7 +1,7 @@
 'use strict';
 // CACHE_BUILD is stamped automatically by the repository GitHub Action.
 // Keep sw.js at the same URL. Never change the editor's v1 database namespace for a cache update.
-const CACHE_BUILD = 'auto-75242501f000';
+const CACHE_BUILD = 'auto-d4a6c6ec3ed5';
 const ROOT = new URL('./', self.location.href);
 const CACHE_PREFIX = 'vf-story-shell:' + encodeURIComponent(ROOT.href) + ':';
 const CACHE_NAME = CACHE_PREFIX + CACHE_BUILD;
