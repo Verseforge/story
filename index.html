@@ -817,7 +817,7 @@ input.placeholder-scroll-covered::placeholder{color:transparent!important;opacit
 
 <script>
 // Release baseline: preserve v1 data and introduce explicit migrations before changing a persisted schema.
-const VF_RELEASE=Object.freeze({appVersion:'1.0.2',storyVersion:1,materialVersion:1,editorSchema:1,statusPanelSchema:1,backupVersion:1,themeVersion:1,dbVersion:1,storageNamespace:'v1'});
+const VF_RELEASE=Object.freeze({appVersion:'1.0.3',storyVersion:1,materialVersion:1,editorSchema:1,statusPanelSchema:1,backupVersion:1,themeVersion:1,dbVersion:1,storageNamespace:'v1'});
 const VF_STORAGE=Object.freeze({database:'vfstory_editor_'+VF_RELEASE.storageNamespace,language:'vfstory_editor_language_'+VF_RELEASE.storageNamespace});
 
 (async () => {
@@ -16458,6 +16458,7 @@ localizeStaticShell();
       pages = Math.max(1, Math.ceil(items.length / 3));
     quickOperationActionIndex[quickOperationKind] = ((quickOperationActionIndex[quickOperationKind] || 0) + dir + pages) % pages;
     renderGraph();
+    vfPulseQuickPanel();
   }
   async function quickDeleteNodes(nodes) {
     const p = currentProject(),
@@ -17705,8 +17706,8 @@ localizeStaticShell();
     }
     const panel = $('#graphToolPanel');
     if (!panel) return;
-    const opening = panel.classList.contains('hidden');
-    panel.classList.toggle('hidden', !opening);
+    const opening = panel.classList.contains('hidden') || panel.classList.contains('vf-closing');
+    if (opening) vfShowQuickPanel(panel);else vfHideQuickPanel(panel);
     renderGraphQuickTools();
     requestAnimationFrame(() => clampGraphQuickControl());
   }
@@ -17717,10 +17718,35 @@ localizeStaticShell();
     renderGraphQuickTools();
     requestAnimationFrame(() => clampGraphQuickControl());
   }
+  var vfQuickPanelTimer = 0;
+  function vfShowQuickPanel(panel) {
+    if (!panel) return;
+    clearTimeout(vfQuickPanelTimer);
+    vfQuickPanelTimer = 0;
+    panel.classList.remove('vf-closing');
+    panel.classList.remove('hidden');
+  }
+  function vfHideQuickPanel(panel) {
+    if (!panel || panel.classList.contains('hidden')) return;
+    panel.classList.add('vf-closing');
+    clearTimeout(vfQuickPanelTimer);
+    vfQuickPanelTimer = setTimeout(() => {
+      panel.classList.add('hidden');
+      panel.classList.remove('vf-closing');
+      vfQuickPanelTimer = 0;
+    }, 140);
+  }
+  function vfPulseQuickPanel() {
+    const panel = document.querySelector('.quick-node-panel');
+    if (!panel) return;
+    panel.classList.remove('vf-turn');
+    void panel.offsetWidth;
+    panel.classList.add('vf-turn');
+  }
   function closeGraphQuickTools() {
     const panel = $('#graphToolPanel'),
       control = $('#graphQuickControl');
-    panel?.classList.add('hidden');
+    vfHideQuickPanel(panel);
     renderGraphQuickTools();
   }
   function openGraphSearch() {
@@ -39735,4 +39761,210 @@ function compactPlayerCss(published=false){
   });
 })();
 </script>
+<style id="vf-motion">
+/* ============================================================
+   VF Motion Layer  ·  纯 CSS 附加动效层   v3
+   ------------------------------------------------------------
+   v3 变更：
+   - 侧边栏底部“帮助与反馈 / 编辑器设置”按钮：按下缩放，
+     切换二级页面时图标像底部导航一样回弹点亮（只对这两个，
+     素材 / 主题按钮是开弹窗，不参与）。
+   - 画布“更多操作”扳手面板：展开时从右上角轻微放大落下，
+     收起时淡出上移（收起由 JS 加 .vf-closing 延迟 140ms 关闭）。
+   - 面板内三组图标翻页：下一组从下往上进，上一组从上往下进。
+   ------------------------------------------------------------
+   v2 变更：
+   - 移除底部导航的“当前项顶部指示条”（只保留图标回弹）
+   - 修复：从菜单侧边栏打开的弹窗之前没有动画。原因是这些弹窗
+     会被 JS 加上 .drawer-modal 类（top:0 全高），而 v1 的选择器
+     把它排除了。现在不再排除。
+   - 新增：侧边栏内的二级页面（我的素材 / 主题 / 帮助 / 设置）
+     切换时内容从右侧滑入、返回时故事列表从左侧滑入。
+   - 预览播放器与导出故事的弹窗（.preview-runtime-dialog /
+     .story-themed-dialog）显式排除：那是“故事本体”，不动。
+   ------------------------------------------------------------
+   设计约束：
+   1. 只用 transform / opacity。
+   2. 页面与弹窗是 display:none -> flex 切换，transition 不触发，
+      只有 animation 会。所以全部用 animation，不改 JS。
+   3. .app-page 内有 position:fixed 的 .fab，页面切换只淡入、
+      不加位移，否则 FAB 会在动画期间按页面定位而跳一下。
+   4. 全部包在 prefers-reduced-motion: no-preference 内。
+   5. 时长统一走 --vf-* 变量。
+   ============================================================ */
+
+:root {
+  --vf-fast: 110ms;   /* 按压 */
+  --vf-base: 180ms;   /* 页面切换 */
+  --vf-pop:  240ms;   /* 弹窗、浮层 */
+  --vf-ease: cubic-bezier(.22, .8, .24, 1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+
+  /* 1) 页面切换：淡入 */
+  .app-page.active { animation: vfPageIn var(--vf-base) ease-out; }
+  @keyframes vfPageIn { from { opacity: 0 } to { opacity: 1 } }
+
+  /* 2) 弹窗：遮罩淡入 + 卡片轻微上浮
+        （含从侧边栏打开的 .drawer-modal 弹窗；故事本体弹窗除外） */
+  .modal-layer:not(.hidden):not(.preview-runtime-dialog):not(.story-themed-dialog) {
+    animation: vfFadeIn 160ms ease-out;
+  }
+  .modal-layer:not(.hidden):not(.preview-runtime-dialog):not(.story-themed-dialog) > .modal {
+    animation: vfModalIn var(--vf-pop) var(--vf-ease);
+  }
+  @keyframes vfFadeIn { from { opacity: 0 } to { opacity: 1 } }
+  @keyframes vfModalIn {
+    from { opacity: 0; transform: translateY(12px) scale(.975) }
+    to   { opacity: 1; transform: none }
+  }
+
+  /* 3) 小浮层：画布查找框、取色长按菜单 */
+  .graph-search-overlay:not(.hidden),
+  .color-hold-menu:not(.hidden) { animation: vfPopIn 150ms var(--vf-ease); }
+  @keyframes vfPopIn {
+    from { opacity: 0; transform: translateY(-6px) scale(.98) }
+    to   { opacity: 1; transform: none }
+  }
+
+  /* 4) 按钮按压 */
+  .icon-btn, .text-btn, .chip-btn, .primary-btn, .danger-btn {
+    transition: transform var(--vf-fast) ease,
+                background-color var(--vf-fast) ease,
+                box-shadow var(--vf-fast) ease,
+                opacity var(--vf-fast) ease;
+  }
+  .icon-btn:active, .text-btn:active, .chip-btn:active,
+  .primary-btn:active, .danger-btn:active { transform: scale(.96); }
+
+  /* 5) 底部导航：按下缩放 + 切换时图标回弹（无指示条） */
+  .nav-btn .svg-icon { transition: transform var(--vf-fast) ease; }
+  .nav-btn:active .svg-icon { transform: scale(.9); }
+  .nav-btn.active .svg-icon { animation: vfNavPop 300ms var(--vf-ease); }
+  @keyframes vfNavPop {
+    0%   { transform: scale(.88) }
+    55%  { transform: scale(1.1) }
+    100% { transform: scale(1) }
+  }
+
+  /* 6) 侧边栏二级页面：进入从右、返回从左 */
+  #drawerInnerHead:not(.hidden),
+  #drawerInnerContent:not(.hidden) { animation: vfDrawerInRight 200ms var(--vf-ease); }
+  .story-drawer > .story-list:not(.hidden) { animation: vfDrawerInLeft 180ms var(--vf-ease); }
+  @keyframes vfDrawerInRight {
+    from { opacity: 0; transform: translateX(14px) }
+    to   { opacity: 1; transform: none }
+  }
+  @keyframes vfDrawerInLeft {
+    from { opacity: 0; transform: translateX(-10px) }
+    to   { opacity: 1; transform: none }
+  }
+
+  /* 7) 卡片、选项类条目：轻微下压 */
+  .presentation-card, .animation-option, .test-scenario-card {
+    transition: transform var(--vf-fast) ease,
+                border-color var(--vf-fast) ease,
+                background-color var(--vf-fast) ease;
+  }
+  .story-card:active, .presentation-card:active,
+  .animation-option:active, .test-scenario-card:active { transform: scale(.99); }
+
+  /* 8) 画布节点：沿用原有过渡，只统一缓动曲线 */
+  .node { transition: box-shadow 160ms var(--vf-ease), transform 160ms var(--vf-ease); }
+
+  /* 9) 侧边栏底部：帮助 / 设置按钮（切换二级页面）——点亮回弹 */
+  .drawer-tool-btn {
+    transition: transform var(--vf-fast) ease,
+                color var(--vf-fast) ease,
+                background-color var(--vf-fast) ease;
+  }
+  .drawer-tool-btn:active { transform: scale(.94); }
+  .drawer-tool-btn.active .svg-icon { animation: vfNavPop 300ms var(--vf-ease); }
+
+  /* 10) 画布“更多操作”面板：展开 / 收起 + 阴影收一下 */
+  #graphToolPanel {
+    transform-origin: top right;
+    overflow: hidden;                 /* 翻页时在面板内裁切，像传送带窗口 */
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--shadow-color) 65%, transparent);
+    transition: opacity 130ms ease, transform 130ms var(--vf-ease);
+  }
+  #graphToolPanel.align-left { transform-origin: top left; }
+  #graphToolPanel:not(.hidden) { animation: vfPanelIn 180ms var(--vf-ease); }
+  @keyframes vfPanelIn {
+    from { opacity: 0; transform: translateY(-8px) scale(.94) }
+    to   { opacity: 1; transform: none }
+  }
+  /* 收起：由 JS 先加 .vf-closing，140ms 后再加 .hidden */
+  #graphToolPanel.vf-closing {
+    opacity: 0;
+    transform: translateY(-6px) scale(.96);
+    pointer-events: none;
+  }
+  /* 面板里的按钮不再各自投影，只留面板一层 */
+  #graphToolPanel .graph-tool-action { box-shadow: none; }
+  /* 外面那颗扳手按钮保留阴影，但比原来淡 */
+  #graphToolsBtn { box-shadow: 0 4px 14px color-mix(in srgb, var(--shadow-color) 70%, transparent); }
+
+  /* 11) 面板内翻页：传送带式，永远同向短距上移，110ms */
+  #graphToolPanel [data-graph-tool-page]:not(.hidden) {
+    animation: vfTurn 110ms var(--vf-ease);
+  }
+
+  /* 12) 快速操作：节点旁的菜单面板，翻页同一套 */
+  .quick-node-panel { overflow: hidden; }
+  .quick-node-panel.vf-turn .quick-panel-page {
+    animation: vfTurn 110ms var(--vf-ease);
+  }
+  @keyframes vfTurn {
+    from { opacity: 0; transform: translateY(6px) }
+    to   { opacity: 1; transform: none }
+  }
+}
+
+</style>
+<style id="vf-theme-fix">
+/* ============================================================
+   VF Theme Fix · 主题配色修正
+   ------------------------------------------------------------
+   问题：橄榄棕绿（olive-brown）的 --accent:#5C614D 与正文 #2F2B26、
+   次要文字 #6B6559 的色相/明度太接近（与 muted 的 CIELAB ΔE 仅 7.3，
+   肉眼几乎同色），导致所有"用 accent 表示已激活"的地方都看不出来：
+   底部导航当前项、侧边栏帮助/设置按钮、节点列表的标签开关图标、
+   chip 的 active 状态等。
+
+   新色 #4F5D1E：与背景 #FAF3E9 对比度 6.5:1（原 5.8:1），
+   与 muted 的 ΔE 提到 30.6，既还是橄榄绿，又能一眼看出"点亮"。
+   --accent-soft / --focus-ring / --primary-shadow / --grid / --toast-bg
+   都跟着换，避免残留旧色相的淡底。
+   ============================================================ */
+
+html[data-app-theme="olive-brown"] {
+  --accent: #4F5D1E;
+  --accent-soft: rgba(79, 93, 30, .14);
+  --active-text: #3E4A12;
+  --focus-ring: rgba(79, 93, 30, .22);
+  --primary-shadow: rgba(79, 93, 30, .22);
+  --grid: rgba(79, 93, 30, .18);
+  --toast-bg: #4F5D1E;
+}
+
+/* ------------------------------------------------------------
+   深色主题：矿物深青（dark-cyan）
+   ------------------------------------------------------------
+   问题更直接：原配色里 --accent 和 --muted 是同一个值 #79C7C5，
+   色差 ΔE = 0。也就是说"未选中的图标"和"当前页图标"本来就是同一种颜色，
+   任何点亮状态都不可能看出来。
+
+   改法：保留 accent 的亮青 #79C7C5（品牌色不动），把 --muted 压暗、
+   去饱和到 #749398 —— 次要文字本来就该比强调色安静，改完：
+     accent 与背景 9.3:1，muted 与背景 5.5:1，两者 ΔE 22.3。
+   ------------------------------------------------------------ */
+
+html[data-app-theme="dark-cyan"] {
+  --muted: #749398;
+}
+
+
+</style>
 </body></html>
