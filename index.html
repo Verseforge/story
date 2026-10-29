@@ -7803,7 +7803,7 @@ localizeStaticShell();
         customThemes: [],
         modalCloseHintDismissed: false,
         storyDrawerDiscovered: false,
-        nodeCountdownExpanded: false
+        nodeEditorDisclosures: {}
       },
       currentProjectId: p.id,
       projects: [p]
@@ -10456,7 +10456,8 @@ localizeStaticShell();
     out.preferences.showNodeListTags = out.preferences.showNodeListTags !== false;
     out.preferences.modalCloseHintDismissed = out.preferences.modalCloseHintDismissed === true;
     out.preferences.storyDrawerDiscovered = out.preferences.storyDrawerDiscovered === true;
-    out.preferences.nodeCountdownExpanded = out.preferences.nodeCountdownExpanded === true;
+    out.preferences.nodeEditorDisclosures = normalizeNodeEditorDisclosures(out.preferences.nodeEditorDisclosures);
+    delete out.preferences.nodeCountdownExpanded;
     out.preferences.graphToolPosition = out.preferences.graphToolPosition && typeof out.preferences.graphToolPosition === 'object' ? out.preferences.graphToolPosition : {};
     out.preferences.graphToolPage = [0, 1, 2].includes(Number(out.preferences.graphToolPage)) ? Number(out.preferences.graphToolPage) : 0;
     out.preferences.graphViewportByProject = normalizeGraphViewportPreferences(out.preferences.graphViewportByProject);
@@ -16963,7 +16964,7 @@ localizeStaticShell();
     node.onpointercancel = end;
   }
   function renderEditor() {
-    syncNodeCountdownDisclosure();
+    syncNodeEditorDisclosures();
     const x = selectedNode();
     if (!x) return;
     const home = x.systemType === 'home';
@@ -30567,17 +30568,70 @@ localizeStaticShell();
     document.addEventListener('visibilitychange',()=>{if(!document.hidden)maybeStartStoryCreationGuide();});
   }
 
+  const NODE_EDITOR_DISCLOSURES={eventCall:'nodeEventCallDetails',entityBinding:'nodeEntityBindingDetails',entryEffectGroup:'nodeEntryEffectGroupDetails'};
+  function normalizeNodeEditorDisclosures(value){
+    if(!value||typeof value!=='object'||Array.isArray(value))return {};
+    return Object.fromEntries(Object.entries(value).filter(([key,record])=>{
+      if(!record||typeof record!=='object'||Array.isArray(record))return false;
+      try{const pair=JSON.parse(key);return Array.isArray(pair)&&pair.length===2&&pair.every(id=>typeof id==='string'&&id.length>0);}catch{return false;}
+    }).map(([key,record])=>[key,Object.fromEntries(['countdown',...Object.keys(NODE_EDITOR_DISCLOSURES)].map(section=>[section,record[section]===true]))]));
+  }
+  function nodeEditorDisclosureKey(){
+    const project=currentProject(),node=selectedNode();
+    return project?.id&&node?.id&&node.systemType!=='home'?JSON.stringify([String(project.id),String(node.id)]):'';
+  }
+  function nodeEditorDisclosureRecord(key=nodeEditorDisclosureKey()){
+    const map=state.preferences.nodeEditorDisclosures;
+    const record=key&&map&&typeof map==='object'&&!Array.isArray(map)&&Object.hasOwn(map,key)?map[key]:null;
+    return record&&typeof record==='object'&&!Array.isArray(record)?record:{};
+  }
+  function setNodeEditorDisclosure(section,expanded,key=nodeEditorDisclosureKey()){
+    if(!key||!['countdown',...Object.keys(NODE_EDITOR_DISCLOSURES)].includes(section))return;
+    const before=nodeEditorDisclosureRecord(key),value=expanded===true;
+    if((before[section]===true)===value)return;
+    if(!state.preferences.nodeEditorDisclosures||typeof state.preferences.nodeEditorDisclosures!=='object'||Array.isArray(state.preferences.nodeEditorDisclosures))state.preferences.nodeEditorDisclosures={};
+    state.preferences.nodeEditorDisclosures[key]={...before,[section]:value};
+    savePreferencesOnly();
+  }
+  function syncNodeEditorDisclosures(){
+    const key=nodeEditorDisclosureKey(),record=nodeEditorDisclosureRecord(key);
+    for(const [section,id]of Object.entries(NODE_EDITOR_DISCLOSURES)){
+      const details=$('#'+id);if(!details)continue;
+      // Toggle events can be queued across renders. Always restore the final new owner first.
+      details.dataset.nodeDisclosureKey=key;
+      const expanded=record[section]===true;
+      if(details.open!==expanded)details.open=expanded;
+    }
+    syncNodeCountdownDisclosure();
+  }
+  function installNodeEditorDisclosures(){
+    for(const [section,id]of Object.entries(NODE_EDITOR_DISCLOSURES)){
+      const details=$('#'+id),summary=details?.querySelector('summary');if(!details||!summary)continue;
+      summary.addEventListener('click',event=>{
+        event.preventDefault();
+        const key=details.dataset.nodeDisclosureKey;if(!key||key!==nodeEditorDisclosureKey())return;
+        const expanded=!details.open;
+        // Save synchronously, before a subsequent node selection can replace this form.
+        setNodeEditorDisclosure(section,expanded,key);details.open=expanded;
+      });
+      details.addEventListener('toggle',()=>{
+        const key=details.dataset.nodeDisclosureKey;
+        if(key&&key===nodeEditorDisclosureKey())setNodeEditorDisclosure(section,details.open,key);
+      });
+    }
+  }
   function syncNodeCountdownDisclosure(){
-    const expanded=state.preferences.nodeCountdownExpanded===true,button=$('#nodeCountdownToggle'),body=$('#nodeCountdownBody');
+    const expanded=nodeEditorDisclosureRecord().countdown===true,button=$('#nodeCountdownToggle'),body=$('#nodeCountdownBody');
     if(!button||!body)return;
     button.setAttribute('aria-expanded',String(expanded));
     button.setAttribute('aria-label',VF_LANG==='en'?(expanded?'Collapse countdown settings':'Expand countdown settings'):(expanded?'收起倒计时设置':'展开倒计时设置'));
     body.classList.toggle('hidden',!expanded);
   }
   function toggleNodeCountdownDisclosure(){
-    state.preferences.nodeCountdownExpanded=state.preferences.nodeCountdownExpanded!==true;
-    syncNodeCountdownDisclosure();savePreferencesOnly();
+    setNodeEditorDisclosure('countdown',nodeEditorDisclosureRecord().countdown!==true);
+    syncNodeCountdownDisclosure();
   }
+
   function setEditorCreationFocus(layer,isNew){if(layer)layer.dataset.editorFocusMode=isNew?'create':'view';}
   function focusModalContainer(layer){
     const dialog=layer.querySelector('[role="dialog"]')||layer;
@@ -38013,6 +38067,7 @@ localizeStaticShell();
     });
   }
   function bindNodeEditorEvents() {
+    installNodeEditorDisclosures();
     $('#nodeCountdownToggle').onclick=toggleNodeCountdownDisclosure;
     $('#closeEditorBtn').onclick = requestCloseEditor;
     els.nodeTitle.onchange = async () => {
