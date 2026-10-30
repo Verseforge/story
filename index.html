@@ -817,7 +817,7 @@ input.placeholder-scroll-covered::placeholder{color:transparent!important;opacit
 
 <script>
 // Release baseline: preserve v1 data and introduce explicit migrations before changing a persisted schema.
-const VF_RELEASE=Object.freeze({appVersion:'1.0.3',storyVersion:1,materialVersion:1,editorSchema:1,statusPanelSchema:1,backupVersion:1,themeVersion:1,dbVersion:1,storageNamespace:'v1'});
+const VF_RELEASE=Object.freeze({appVersion:'1.0.4',storyVersion:1,materialVersion:1,editorSchema:1,statusPanelSchema:1,backupVersion:1,themeVersion:1,dbVersion:1,storageNamespace:'v1'});
 const VF_STORAGE=Object.freeze({database:'vfstory_editor_'+VF_RELEASE.storageNamespace,language:'vfstory_editor_language_'+VF_RELEASE.storageNamespace});
 
 (async () => {
@@ -39920,9 +39920,197 @@ function compactPlayerCss(published=false){
     from { opacity: 0; transform: translateY(6px) }
     to   { opacity: 1; transform: none }
   }
+
+  /* 13) 编辑器弹窗退场：遮罩淡出 + 卡片轻微下沉收拢。
+        关闭仍由原业务代码立即完成；JS 只复制一个 180ms 的视觉层。
+        保留 .hidden 可让现有弹窗栈、快捷键及焦点逻辑继续把它视为已关闭，
+        此处仅用更高优先级恢复视觉层的 display。故事本体弹窗不会进入此层。 */
+  .modal-layer.vf-modal-exit-ghost.hidden {
+    display: flex !important;
+    pointer-events: none !important;
+    animation: vfModalExitFade var(--vf-exit, 180ms) cubic-bezier(.4, 0, 1, 1) both !important;
+    will-change: opacity;
+  }
+  .modal-layer.vf-modal-exit-ghost > .modal {
+    animation: vfModalOut var(--vf-exit, 180ms) cubic-bezier(.4, 0, .2, 1) both !important;
+    will-change: transform, opacity;
+  }
+  @keyframes vfModalExitFade {
+    from { opacity: 1 }
+    to   { opacity: 0 }
+  }
+  @keyframes vfModalOut {
+    from { opacity: 1; transform: none }
+    to   { opacity: 0; transform: translateY(8px) scale(.985) }
+  }
 }
 
 </style>
+<script id="vf-modal-exit-motion">
+/* 编辑器弹窗退场视觉层：不延迟关闭、不接管事件，也不进入故事预览/导出模板。 */
+(() => {
+  'use strict';
+
+  const EDITOR_MODAL = '.modal-layer:not(.preview-runtime-dialog):not(.story-themed-dialog)';
+  const GHOST_CLASS = 'vf-modal-exit-ghost';
+  const EXIT_MS = 180;
+  const MAX_GHOSTS = 4;
+  const motionPreference = window.matchMedia('(prefers-reduced-motion: no-preference)');
+  const activeGhosts = new Set();
+  const sourceGhosts = new WeakMap();
+  const scrollMemory = new WeakMap();
+
+  function hasToken(className, token) {
+    return (` ${className || ''} `).includes(` ${token} `);
+  }
+
+  function eligibleEditorModal(node) {
+    return node instanceof Element && node.matches(EDITOR_MODAL) && !node.classList.contains(GHOST_CLASS);
+  }
+
+  // 只记录滚动位置，不用滚动事件驱动动画。弹窗 display:none / remove 后，
+  // 部分浏览器已读不到原滚动值，因此需要在关闭前持续保留最后一次位置。
+  document.addEventListener('scroll', event => {
+    const target = event.target;
+    if (!(target instanceof Element) || !target.closest('.modal-layer')) return;
+    scrollMemory.set(target, { left: target.scrollLeft, top: target.scrollTop });
+  }, true);
+
+  function captureScrollPositions(layer) {
+    return [layer, ...layer.querySelectorAll('*')].map(element => {
+      const remembered = scrollMemory.get(element);
+      return remembered || { left: element.scrollLeft, top: element.scrollTop };
+    });
+  }
+
+  function restoreScrollPositions(layer, positions) {
+    const elements = [layer, ...layer.querySelectorAll('*')];
+    positions.forEach((position, index) => {
+      const element = elements[index];
+      if (!element || (!position.left && !position.top)) return;
+      element.scrollLeft = position.left;
+      element.scrollTop = position.top;
+    });
+  }
+
+  function finishGhost(ghost) {
+    const record = ghost.__vfExitRecord;
+    if (!record || record.finished) return;
+    record.finished = true;
+    clearTimeout(record.timer);
+    ghost.removeEventListener('animationend', record.onAnimationEnd);
+    activeGhosts.delete(record);
+    if (sourceGhosts.get(record.source) === record) sourceGhosts.delete(record.source);
+    ghost.remove();
+  }
+
+  function finishAllGhosts() {
+    [...activeGhosts].forEach(record => finishGhost(record.ghost));
+  }
+
+  function cancelSourceExit(source) {
+    const record = sourceGhosts.get(source);
+    if (record) finishGhost(record.ghost);
+  }
+
+  function beginExit(source) {
+    if (!motionPreference.matches || document.hidden || !eligibleEditorModal(source)) return;
+    // dependency-suspended 只是创建依赖时暂时隐藏父弹窗，不是真正关闭。
+    if (source.classList.contains('dependency-suspended') || !source.querySelector(':scope > .modal')) return;
+    cancelSourceExit(source);
+
+    while (activeGhosts.size >= MAX_GHOSTS) {
+      const oldest = activeGhosts.values().next().value;
+      if (!oldest) break;
+      finishGhost(oldest.ghost);
+    }
+
+    const wasConnected = source.isConnected;
+    const wasDynamic = source.classList.contains('dynamic-dialog');
+    const positions = captureScrollPositions(source);
+    const ghost = source.cloneNode(true);
+
+    // .hidden 让所有既有业务查询仍将它视为已关闭；inert 同时隔离焦点与交互。
+    ghost.classList.add('hidden', GHOST_CLASS);
+    ghost.setAttribute('aria-hidden', 'true');
+    ghost.setAttribute('inert', '');
+    ghost.setAttribute('data-vf-modal-exit', '');
+    ghost.tabIndex = -1;
+    // 这些标记用于防止重复创建存储/恢复弹窗，也不能被退场副本继续持有。
+    ['storageQuota', 'storageUnavailable', 'conflictRecovery', 'storageConflict', 'ownDraftGuard'].forEach(key => {
+      delete ghost.dataset[key];
+    });
+
+    // dynamic-dialog 有少量不检查 .hidden 的全局快捷键查询，不能留在视觉层上。
+    // z-index 已由 raiseEditorLayer 写入内联样式；保留它即可维持原层叠位置。
+    if (wasDynamic) {
+      ghost.classList.remove('dynamic-dialog');
+      if (!ghost.style.zIndex) ghost.style.zIndex = wasConnected ? getComputedStyle(source).zIndex : '400';
+    }
+
+    // 固定弹窗的原节点仍在前面，保留 id 可确保退出期间 ID 选择器样式不变。
+    // 动态弹窗原节点已移除，去掉 id，避免 180ms 内再次打开同类弹窗时发生重复 id。
+    if (!wasConnected) {
+      if (ghost.id) ghost.removeAttribute('id');
+      ghost.querySelectorAll('[id]').forEach(element => element.removeAttribute('id'));
+    }
+
+    const record = { source, ghost, timer: 0, finished: false, onAnimationEnd: null };
+    record.onAnimationEnd = event => {
+      if (event.target === ghost && event.animationName === 'vfModalExitFade') finishGhost(ghost);
+    };
+    ghost.__vfExitRecord = record;
+    sourceGhosts.set(source, record);
+    activeGhosts.add(record);
+    ghost.addEventListener('animationend', record.onAnimationEnd);
+    document.body.appendChild(ghost);
+    restoreScrollPositions(ghost, positions);
+
+    // animationend 可能被元素移除、页面切换或浏览器优化吞掉，保留一次性兜底。
+    record.timer = window.setTimeout(() => finishGhost(ghost), EXIT_MS + 100);
+  }
+
+  const observer = new MutationObserver(mutations => {
+    const closingLayers = new Set();
+    for (const mutation of mutations) {
+      if (mutation.type === 'attributes') {
+        const layer = mutation.target;
+        if (!eligibleEditorModal(layer)) continue;
+        const wasHidden = hasToken(mutation.oldValue, 'hidden');
+        const isHidden = layer.classList.contains('hidden');
+        if (!wasHidden && isHidden) closingLayers.add(layer);
+        else if (wasHidden && !isHidden) cancelSourceExit(layer);
+        continue;
+      }
+      for (const layer of mutation.addedNodes) {
+        if (eligibleEditorModal(layer) && layer.isConnected && !layer.classList.contains('hidden')) cancelSourceExit(layer);
+      }
+      for (const layer of mutation.removedNodes) {
+        if (eligibleEditorModal(layer) && !layer.isConnected) closingLayers.add(layer);
+      }
+    }
+    closingLayers.forEach(beginExit);
+  });
+
+  observer.observe(document.body, {
+    subtree: true,
+    childList: true,
+    attributes: true,
+    attributeFilter: ['class'],
+    attributeOldValue: true
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) finishAllGhosts();
+  });
+  window.addEventListener('pagehide', finishAllGhosts);
+  if (typeof motionPreference.addEventListener === 'function') {
+    motionPreference.addEventListener('change', () => {
+      if (!motionPreference.matches) finishAllGhosts();
+    });
+  }
+})();
+</script>
 <style id="vf-theme-fix">
 /* ============================================================
    VF Theme Fix · 主题配色修正
