@@ -1,8 +1,8 @@
 {
-  "versionCode": 5,
-  "versionName": "1.0.4",
+  "versionCode": 6,
+  "versionName": "1.0.5",
   "notes": {
-    "zh-CN": "新增部分界面动效。",
-    "en": "Added some interface motion."
+    "zh-CN": "更新至新网址与新仓库维护的 1.0.5。升级后自动更新使用新渠道；保留内嵌图标，完善英文网站介绍。",
+    "en": "Move to the 1.0.5 release maintained at the new website and repository. Future app updates use the new channel. Embedded icons are retained and English public metadata is improved."
   }
 }
