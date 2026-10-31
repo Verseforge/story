@@ -1,3 +1,15 @@
+> **已迁移 / Moved**
+>
+> 新仓库：[Verseforge/vf-story](https://github.com/Verseforge/vf-story) · 新网页版：https://story.verseforges.com/
+>
+> 此仓库保留旧网址 https://verseforges.com/story/ 和 1.0.4 编辑器，不再维护或更新编辑器。新版本请使用上方仓库和网址。旧 APP 的更新清单与安装包只保留一次升级至新渠道所需的兼容入口。
+>
+> The maintained project is now [Verseforge/vf-story](https://github.com/Verseforge/vf-story), at https://story.verseforges.com/ . This repository retains the unmaintained 1.0.4 web editor and a compatibility update path for older Android installations.
+>
+> 网页用户：先在旧站“菜单 → 编辑器设置”导出编辑器备份，再到新站恢复。新旧网址的本地数据相互独立，不会自动搬迁；备份不包含本地保存版本。也可继续使用旧站。
+>
+> Web users: export an editor backup on the old site, then restore it on the new site. Storage is separate and does not migrate automatically; saved local versions are excluded. You may keep using the old site.
+
 # Verseforge Story
 
 **锻造属于你的故事 · Craft your interactive story**
@@ -54,7 +66,7 @@ Android 应用与网页版的数据分别保存在各自的本地环境中，不
 
 ### 联系与反馈
 
-- GitHub Issues：[提交问题](https://github.com/Verseforge/story/issues)
+- GitHub Issues：[提交问题](https://github.com/Verseforge/vf-story/issues)
 - 用户反馈表（飞书多维表格）：[填写反馈](https://ncnviye1gx54.feishu.cn/share/base/form/shrcnhqCTlE1nLDngroYfDYrvCg)
 - 邮箱：verseforge@foxmail.com / verseforge.sj@gmail.com
 
@@ -110,7 +122,7 @@ Updates are prepared in the background without forcing a reload while you edit. 
 
 ### Contact and feedback
 
-- GitHub Issues: [Report a problem](https://github.com/Verseforge/story/issues)
+- GitHub Issues: [Report a problem](https://github.com/Verseforge/vf-story/issues)
 - User feedback form (Lark Forms): [Send feedback](https://ncnviye1gx54.feishu.cn/share/base/form/shrcnhqCTlE1nLDngroYfDYrvCg)
 - Email: verseforge@foxmail.com / verseforge.sj@gmail.com
 
