@@ -6,8 +6,9 @@ on:
     paths:
       - index.html
       - site.webmanifest
-      - assets/icons/web-app-manifest-192x192.png
-      - assets/icons/web-app-manifest-512x512.png
+      - 'assets/icons/**'
+      - sw.js
+      - .github/workflows/stamp-sw-cache.yml
   workflow_dispatch:
 
 permissions:
@@ -28,9 +29,18 @@ jobs:
         id: stamp
         run: |
           set -euo pipefail
-          HASH=$(cat index.html site.webmanifest \
-            assets/icons/web-app-manifest-192x192.png \
-            assets/icons/web-app-manifest-512x512.png | sha256sum | cut -c1-12)
+          HASH=$({
+            cat index.html site.webmanifest \
+              assets/icons/favicon.ico \
+              assets/icons/favicon-96x96.png \
+              assets/icons/favicon.svg \
+              assets/icons/apple-touch-icon.png \
+              assets/icons/web-app-manifest-192x192.png \
+              assets/icons/web-app-manifest-512x512.png \
+              assets/icons/web-app-manifest-maskable-512x512.png
+            # Include worker changes while excluding its generated build value.
+            sed "s/^const CACHE_BUILD = .*/const CACHE_BUILD = 'AUTO';/" sw.js
+          } | sha256sum | cut -c1-12)
           BUILD="auto-$HASH"
           grep -q "^const CACHE_BUILD = '" sw.js
           sed -i "s/^const CACHE_BUILD = '[^']*';/const CACHE_BUILD = '$BUILD';/" sw.js
@@ -55,3 +65,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Pages rebuild request skipped"
+
